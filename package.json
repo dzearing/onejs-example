@@ -1,0 +1,22 @@
+{
+  "name": "onejs-example",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-tsc": "^0.9.2",
+    "gulp-onejs-compiler": "^0.0.0",
+    "gulp-clean": "^0.3.1",
+    "requirejs": "^2.1.14",
+    "gulp-flatten": "0.0.2",
+    "gulp-uglifyjs": "^0.4.2",
+    "gulp-add": "0.0.1",
+    "gulp-add-src": "^0.1.1"
+  }
+}

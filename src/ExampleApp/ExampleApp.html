@@ -1,0 +1,12 @@
+<js-template js-name="ExampleApp" js-model="ExampleAppModel" class="foo">
+
+    <js-control js-name="header" js-type="Header" />
+
+    <div js-bind="html:paragraphHtml1, css.display:isVisible"></div>
+    <div class="seperator"></div>
+    <div js-bind="html:paragraphHtml2"></div>
+    <div class="seperator" js-bind="className.myclass:isSeperatorVisible"></div>
+
+    <button js-userAction="click:onClick">Click me</button>
+
+</js-template>
