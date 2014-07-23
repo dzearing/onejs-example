@@ -4,7 +4,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'View'], function(require, exports, View) {
+define(["require", "exports", 'View', 'Header.css'], function(require, exports, View, Headercss) {
+    View.loadStyles(Headercss.styles);
+
     var Header = (function (_super) {
         __extends(Header, _super);
         function Header(data) {
@@ -16,9 +18,10 @@ define(["require", "exports", 'View'], function(require, exports, View) {
             ];
 
             this.viewName = 'Header';
+            this.baseClass = 'c-' + this.viewName + (this.baseClass ? ' ' : '');
         }
         Header.prototype.onRenderHtml = function (viewModel) {
-            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + View.genStyle(this.baseStyle) + ' ' + View.genClass(this.baseClass) + '>' + '<div>' + 'I am a header!' + '</div>' + '</' + this.baseTag + '>' + '';
+            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + this.genStyle(this.baseStyle) + ' ' + this.genClass(this.baseClass) + '>' + '<div>' + 'I am a header!' + '</div>' + '</' + this.baseTag + '>' + '';
         };
         return Header;
     })(View);

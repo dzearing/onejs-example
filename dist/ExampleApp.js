@@ -39,11 +39,12 @@ define(["require", "exports", 'View', 'Encode', 'ExampleAppModel', 'Header'], fu
             ];
 
             this.viewName = 'ExampleApp';
+            this.baseClass = 'c-' + this.viewName + (this.baseClass ? ' ' : '');
             this.viewModelType = ExampleAppModel;
             this.addChild(this.header = new Header());
         }
         ExampleApp.prototype.onRenderHtml = function (viewModel) {
-            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + View.genStyle(this.baseStyle) + ' ' + View.genClass('foo' + this.baseClass) + '>' + this.header.renderHtml() + '<div id="' + this.id + '_1" ' + View.genStyle('', ['display', 'isVisible']) + '>' + Encode.toSafe(viewModel.paragraphHtml1) + '</div>' + '<div></div>' + '<div id="' + this.id + '_2">' + Encode.toSafe(viewModel.paragraphHtml2) + '</div>' + '<div id="' + this.id + '_3" ' + View.genClass('seperator', ['myclass', 'isSeperatorVisible']) + '></div>' + '<button id="' + this.id + '_4">' + 'Click me' + '</button>' + '</' + this.baseTag + '>' + '';
+            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + this.genStyle(this.baseStyle) + ' ' + this.genClass('foo ' + this.baseClass) + '>' + this.header.renderHtml() + '<div id="' + this.id + '_1" ' + this.genStyle('', ['display', 'isVisible']) + '>' + Encode.toSafe(viewModel.paragraphHtml1) + '</div>' + '<div></div>' + '<div id="' + this.id + '_2">' + Encode.toSafe(viewModel.paragraphHtml2) + '</div>' + '<div id="' + this.id + '_3" ' + this.genClass('seperator', ['myclass', 'isSeperatorVisible']) + '></div>' + '<button id="' + this.id + '_4">' + 'Click me' + '</button>' + '</' + this.baseTag + '>' + '';
         };
         return ExampleApp;
     })(View);
