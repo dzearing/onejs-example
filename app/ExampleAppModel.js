@@ -9,10 +9,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
         __extends(ExampleAppModel, _super);
         function ExampleAppModel() {
             _super.apply(this, arguments);
-            this.paragraphHtml1 = 'default para 1';
-            this.paragraphHtml2 = 'default para 2';
-            this.isVisible = false;
-            this.isSeperatorVisible = false;
+            this.showBenefits = false;
         }
         ExampleAppModel.prototype.onClick = function (eventArgs) {
             alert('hi');
