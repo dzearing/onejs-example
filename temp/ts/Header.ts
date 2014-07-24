@@ -28,6 +28,9 @@ class Header extends View {
                 '</div>' +
                 '<ul class="commands">' +
                     '<li>' +
+                        'About' +
+                    '</li>' +
+                    '<li>' +
                         'Create' +
                     '</li>' +
                     '<li>' +

@@ -21,7 +21,7 @@ define(["require", "exports", 'View', 'Header.css'], function(require, exports, 
             this.baseClass = 'c-' + this.viewName + (this.baseClass ? ' ' : '');
         }
         Header.prototype.onRenderHtml = function (viewModel) {
-            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + this.genStyle(this.baseStyle) + ' ' + this.genClass(this.baseClass) + '>' + '<div class="logoImage"></div>' + '<div class="logo">' + 'OneJS' + '</div>' + '<ul class="commands">' + '<li>' + 'Create' + '</li>' + '<li>' + 'Share' + '</li>' + '<li>' + 'Discover' + '</li>' + '</ul>' + '</' + this.baseTag + '>' + '';
+            return '' + '<' + this.baseTag + ' id="' + this.id + '_0" ' + this.genStyle(this.baseStyle) + ' ' + this.genClass(this.baseClass) + '>' + '<div class="logoImage"></div>' + '<div class="logo">' + 'OneJS' + '</div>' + '<ul class="commands">' + '<li>' + 'About' + '</li>' + '<li>' + 'Create' + '</li>' + '<li>' + 'Share' + '</li>' + '<li>' + 'Discover' + '</li>' + '</ul>' + '</' + this.baseTag + '>' + '';
         };
         return Header;
     })(View);

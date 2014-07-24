@@ -73,4 +73,8 @@ gulp.task('copy-static-files', ['clean', 'tsc'], function() {
         .pipe(gulp.dest(paths.appPath));
 });
 
+gulp.task('watch', function() {
+    gulp.watch('src/**/*', ['default']);
+});
+
 gulp.task('default', ['tsc', 'copy-static-files']);
