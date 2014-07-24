@@ -2,6 +2,7 @@ import View = require('View');
 import Encode = require('Encode');
 import IHeaderModel = require('IHeaderModel');
 import Headercss = require('Header.css');
+
 View.loadStyles(Headercss.styles);
 
 class Header extends View {
@@ -27,7 +28,7 @@ class Header extends View {
                     'OneJS' +
                 '</div>' +
                 '<ul class="commands">' +
-                    '<li>' +
+                    '<li class="selected">' +
                         'About' +
                     '</li>' +
                     '<li>' +

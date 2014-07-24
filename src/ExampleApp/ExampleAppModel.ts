@@ -9,6 +9,7 @@ class ExampleAppModel extends ViewModel implements IExampleAppModel {
 
         return true;
     }
+
 }
 
 export = ExampleAppModel;

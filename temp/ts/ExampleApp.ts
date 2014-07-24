@@ -1,10 +1,11 @@
 import View = require('View');
 import Encode = require('Encode');
 import IExampleAppModel = require('IExampleAppModel');
-import ExampleAppcss = require('ExampleApp.css');
-View.loadStyles(ExampleAppcss.styles);
 import ExampleAppModel = require('ExampleAppModel');
 import Header = require('Header');
+import ExampleAppcss = require('ExampleApp.css');
+
+View.loadStyles(ExampleAppcss.styles);
 
 class ExampleApp extends View {
     public header: Header;
@@ -40,41 +41,29 @@ class ExampleApp extends View {
                             'OneJS is a tiny web framework.' +
                         '</h1>' +
                         '<p>' +
-                            'OneJS enables you to build easily reusable web components. They can be self contained as a single JavaScript file that can be included via RequireJS AMD modules.' +
+                            'OneJS enables you to build easily reusable web components. They can be easily reused and redistributed as JavaScript files that can be included via RequireJS AMD modules.' +
                         '</p>' +
                         '<h2 js-userActionTODOEXAMPLE="click:toggle(showBenefits)">' +
                             'Why' +
                         '</h2>' +
                         '<ul id="' + this.id + '_1" ' + this.genClass('', ['sectionVisible','showBenefits']) + '>' +
                             '<li>' +
-                                'Small footprint. (8k minified, 5k gzipped)' +
-                            '</li>' +
-                            '<li>' +
-                                'Start with just a view template, grow your control with a JavaScript view model when you&#39;re ready.' +
-                            '</li>' +
-                            '<li>' +
                                 'Performance first, no fluffy parsing the DOM for bindings at runtime.' +
                             '</li>' +
                             '<li>' +
-                                'No dependency on future browser standards, IE8 friendly.' +
+                                'Small footprint. (8k minified, 5k gzipped)' +
                             '</li>' +
                             '<li>' +
-                                'No dependencies on external libraries, works out of the box.' +
+                                'Easy to iterate with. Start with markup, build a view model for it when you&#39;re ready.' +
                             '</li>' +
                             '<li>' +
-                                'Components written in MVVM pattern, forcing clean separation between presentation and logic.' +
+                                'No dependencies on experimental browser features, external libraries.' +
                             '</li>' +
                             '<li>' +
                                 'TypeScript used as an intermediate output to enforce static code analysis.' +
                             '</li>' +
                             '<li>' +
                                 'Less css friendly.' +
-                            '</li>' +
-                            '<li>' +
-                                'Localization friendly. Resources included as AMD modules, which can be remapped with RequireJS config.' +
-                            '</li>' +
-                            '<li>' +
-                                'Selenium test automation friendly. Navigational TypeScript test stubs generated from views, so product changes break tests at build time rather than at runtime.' +
                             '</li>' +
                         '</ul>' +
                         '<h2>' +
