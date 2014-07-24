@@ -1,4 +1,4 @@
-# onejs-example [![Build Status](https://travis-ci.org/dzearing/onejs.png?branch=master)](https://travis-ci.org/dzearing/onejs)
+# onejs-example
 
 > OneJS example page that uses the compiler and library to consume and produce web controls.
 
