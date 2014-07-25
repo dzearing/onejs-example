@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var compiler = require('gulp-onejs-compiler');
+var onejsCompiler = require('gulp-onejs-compiler');
 var tsc = require('gulp-tsc');
 var clean = require('gulp-clean');
 var rjs = require('requirejs');
@@ -10,7 +10,6 @@ var less = require('gulp-less');
 var cssMinify = require('gulp-minify-css');
 var csstojs = require('gulp-csstojs');
 var filter = require('gulp-filter');
-
 
 var paths = {
     tempPath: 'temp',
@@ -25,9 +24,9 @@ gulp.task('clean', function() {
 gulp.task('tsc-preprocess', ['clean'], function() {
     var lessFilter = filter('**/*.less');
 
-    return gulp.src(['node_modules/onejs/src/**/*', 'src/**/*' ])
+    return gulp.src(['node_modules/onejs-compiler/src/**/*', 'node_modules/onejs/src/**/*', 'src/**/*' ])
         .pipe(flatten())
-        .pipe(compiler())
+        .pipe(onejsCompiler())
         .pipe(lessFilter)
         .pipe(less())
         .pipe(cssMinify())
@@ -37,7 +36,6 @@ gulp.task('tsc-preprocess', ['clean'], function() {
         .pipe(lessFilter.restore())
         .pipe(gulp.dest(paths.tempPath + '/ts'));
 });
-
 
 gulp.task('tsc', ['tsc-preprocess'], function() {
     return gulp.src(paths.tempPath + '/ts/**/*.ts')
@@ -78,3 +76,4 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['tsc', 'copy-static-files']);
+

@@ -27,9 +27,9 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
 
                 this._state = 3 /* DISPOSED */;
 
-                this.children.forEach(function (child) {
-                    child.dispose();
-                });
+                for (var i = 0; i < this.children.length; i++) {
+                    this.children[i].dispose();
+                }
 
                 this.clearChildren();
                 this.events.dispose();
@@ -69,13 +69,12 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                 this._state = 2 /* ACTIVE */;
 
                 this._bindEvents();
+                this._findElements();
 
-                this.children.forEach(function (child) {
-                    child.activate();
-                });
+                for (var i = 0; i < this.children.length; i++) {
+                    this.children[i].activate();
+                }
 
-                this.element = document.getElementById(this.id + '_0');
-                this.element['control'] = this;
                 this._viewModel.onActivate(this._subElements);
             }
         };
@@ -84,9 +83,12 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             if (this._state === 2 /* ACTIVE */) {
                 this._state = 1 /* INACTIVE */;
 
-                this.children.forEach(function (child) {
-                    child.deactivate();
-                });
+                this._subElements = null;
+                this.events.off();
+
+                for (var i = 0; i < this.children.length; i++) {
+                    this.children[i].deactivate();
+                }
 
                 this.element['control'] = null;
 
@@ -195,6 +197,20 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                             this.events.on(targetElement, eventName, this._viewModel[targetName]);
                         }
                     }
+                }
+            }
+        };
+
+        View.prototype._findElements = function () {
+            this.element = document.getElementById(this.id + '_0');
+            this.element['control'] = this;
+            this._subElements = {};
+
+            for (var i = 0; i < this._bindings.length; i++) {
+                var binding = this._bindings[i];
+
+                if (binding.childId) {
+                    this._subElements[binding.childId] = document.getElementById(this.id + '_' + binding.id);
                 }
             }
         };

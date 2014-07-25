@@ -16,9 +16,27 @@ class ExampleApp extends View {
         },
         {
             "id": "1",
-            "className": {
-                "sectionVisible": "showBenefits"
-            }
+            "text": "title"
+        },
+        {
+            "id": "2",
+            "text": "subTitle"
+        },
+        {
+            "id": "3",
+            "childId": "viewEditor"
+        },
+        {
+            "id": "4",
+            "childId": "typeScriptEditor"
+        },
+        {
+            "id": "5",
+            "childId": "usageEditor"
+        },
+        {
+            "id": "6",
+            "childId": "viewModelEditor"
         }
     ];
 
@@ -28,7 +46,7 @@ class ExampleApp extends View {
         this.viewName = 'ExampleApp';
         this.baseClass = 'c-' + this.viewName + (this.baseClass ? ' ': '');
         this.viewModelType = ExampleAppModel;
-        this.addChild(this.header = new Header({ items: [{ name: 'Create' }, { name: 'Share' }, { name: 'Discover' }] }));
+        this.addChild(this.header = new Header());
     }
 
     public onRenderHtml(viewModel: IExampleAppModel): string {
@@ -37,27 +55,27 @@ class ExampleApp extends View {
                 this.header.renderHtml() +
                 '<div class="centered">' +
                     '<div class="page">' +
-                        '<h1>' +
-                            'OneJS is a tiny web framework.' +
+                        '<h1 id="' + this.id + '_1">' +
+                            Encode.toJS(viewModel.title) +
                         '</h1>' +
-                        '<p>' +
-                            'OneJS enables you to build easily reusable web components. They can be easily reused and redistributed as JavaScript files that can be included via RequireJS AMD modules.' +
+                        '<p id="' + this.id + '_2">' +
+                            Encode.toJS(viewModel.subTitle) +
                         '</p>' +
                         '<h2 js-userActionTODOEXAMPLE="click:toggle(showBenefits)">' +
                             'Why' +
                         '</h2>' +
-                        '<ul id="' + this.id + '_1" ' + this.genClass('', ['sectionVisible','showBenefits']) + '>' +
+                        '<ul>' +
                             '<li>' +
                                 'Performance first, no fluffy parsing the DOM for bindings at runtime.' +
                             '</li>' +
                             '<li>' +
-                                'Small footprint. (8k minified, 5k gzipped)' +
+                                'Small footprint. (8k minified, 5k gzipped) RequireJS is the only dependency.' +
                             '</li>' +
                             '<li>' +
-                                'Easy to iterate with. Start with markup, build a view model for it when you&#39;re ready.' +
+                                'Build reusable components, share them with others, reskin them.' +
                             '</li>' +
                             '<li>' +
-                                'No dependencies on experimental browser features, external libraries.' +
+                                'Easy to iterate with. Start with markup, build a view model for it when youre ready.' +
                             '</li>' +
                             '<li>' +
                                 'TypeScript used as an intermediate output to enforce static code analysis.' +
@@ -67,35 +85,56 @@ class ExampleApp extends View {
                             '</li>' +
                         '</ul>' +
                         '<h2>' +
-                            'How it works' +
+                            'Overview' +
                         '</h2>' +
                         '<p>' +
-                            'You write a view template for your component:' +
+                            'Diagram here!' +
                         '</p>' +
-                        '<pre>' +
+                        '<h2>' +
+                            'How views work' +
+                        '</h2>' +
+                        '<p>' +
+                            'You write an html template for your component:' +
+                        '</p>' +
+                        '<div id="' + this.id + '_3" js-id="viewEditor" class="editor"></div>' +
+                        '<p>' +
+                            'Using the onejs-compiler (grunt and gulp plugins available), this generates a TypeScript View subclass (and an ViewModel interface) that can be used as your root component, or referenced within other View templates. The only dependencies we require here are View and Encode:' +
+                        '</p>' +
+                        '<div id="' + this.id + '_4" js-id="typeScriptEditor" class="bigEditor"></div>' +
+                        '<p>' +
+                            'To render your root component, you can use the initializeRoot helper to render and activate it, forward browser resize events to it, and dispose it on unload:' +
+                        '</p>' +
+                        '<div id="' + this.id + '_5" js-id="usageEditor" class="editor"></div>' +
+                        '<h2>' +
+                            'Defining a ViewModel' +
+                        '</h2>' +
+                        '<p>' +
+                            'You will want to have default values for your properties to make it easy to consume your component. You can associate a default view model with your view by providing a js-model attribute on the view, and defining the TypeScript class as a subclass of ViewModel:' +
+                        '</p>' +
+                        '<div id="' + this.id + '_6" js-id="viewModelEditor" class="editor"></div>' +
+                        '<h2>' +
+                            'How eventing works' +
+                        '</h2>' +
+                        '<p>' +
+                            'Components can fire events and parents can observe those. For example, a header component may have a number of items, which should be observed by the app. Simple tasks, like flipping pages, can be done purely from the view template:' +
+                        '</p>' +
+                        '<div class="editor">' +
                             'Example' +
-                        '</pre>' +
+                        '</div>' +
+                        '<h2>' +
+                            'Using sub components' +
+                        '</h2>' +
                         '<p>' +
-                            'They compile to anything to you want. You can add your own generators here. Our default compiler pregenerates a TypeScript class, because we love static code analysis! Example:' +
+                            'Content here' +
                         '</p>' +
-                        '<pre>' +
-                            'TypeScript example here' +
-                        '</pre>' +
+                        '<h2>' +
+                            'Load data from services' +
+                        '</h2>' +
                         '<p>' +
-                            '...of course, the build system can continue to produce JavaScript:' +
+                            'Describe xhr helpers, promises, and wrappers.' +
                         '</p>' +
-                        '<pre>' +
-                            'JavaScript compiled output here' +
-                        '</pre>' +
-                        '<p>' +
-                            'To use, you simply use RequireJS to load your main JavaScript:' +
-                        '</p>' +
-                        '<pre>' +
-                            'Example html page loading module' +
-                        '</pre>' +
                     '</div>' +
                 '</div>' +
-                '<section page="create"></section>' +
             '</' + this.baseTag + '>' +
             '';
     }

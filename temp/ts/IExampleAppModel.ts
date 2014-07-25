@@ -1,5 +1,6 @@
 interface IExampleAppModel {
-    showBenefits: boolean;
+    title: string;
+    subTitle: string;
 }
 
 export = IExampleAppModel;
