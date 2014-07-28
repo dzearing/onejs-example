@@ -9,11 +9,18 @@ define(["require", "exports", 'ViewModel', 'TypeScriptGenerator'], function(requ
         __extends(ExampleAppModel, _super);
         function ExampleAppModel() {
             _super.apply(this, arguments);
-            this.title = 'OneJS is a tiny web framework.';
-            this.subTitle = 'OneJS enables you to build easily reusable web components in an Model View ViewModel (MVVM) pattern. Views (templates) compile to TypeScript, so that type safety and static code analysis can be enforced. This allows for really nice scenarios, such as having an interface available to implement for your view model, based on the binding requirements of the View.';
+            this.strings = {
+                title: 'OneJS is a tiny web framework.',
+                subTitle: 'OneJS enables you to build easily reusable web components in an Model View ViewModel (MVVM) pattern. Views (templates) compile to TypeScript, so that type safety and static code analysis can be enforced. This allows for really nice scenarios, such as having an interface available to implement for your view model, based on the binding requirements of the View.'
+            };
+            this.pageKey = 'about';
         }
         ExampleAppModel.prototype.onActivate = function (childElements) {
             this._initializeEditors(childElements);
+        };
+
+        ExampleAppModel.prototype.isViewingPage = function (item) {
+            return item.key == this.pageKey;
         };
 
         ExampleAppModel.prototype._initializeEditors = function (childElements) {
@@ -26,7 +33,7 @@ define(["require", "exports", 'ViewModel', 'TypeScriptGenerator'], function(requ
                 viewEditor.getSession().setMode('ace/mode/html');
 
                 // Hack to provide some example input.
-                viewEditor.setValue('<js-template js-name="MyControl">\n    <div js-bind="text:title"></div>\n</js-template>\n');
+                viewEditor.setValue('<js-view js-type="MyControl">\n    <div js-bind="text:title"></div>\n    <div js-bind="text:description"></div>\n</js-view>\n');
 
                 viewEditor.clearSelection();
                 viewEditor.getSession().on('change', updateTypeScript);

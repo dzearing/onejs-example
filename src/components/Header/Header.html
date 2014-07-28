@@ -1,10 +1,11 @@
-<js-template js-name="Header" js-css="Header.css">
-    <div class="logoImage"></div>
-    <div class="logo">OneJS</div>
-    <ul class="commands">
-        <li class="selected">About</li>
-        <li>Create</li>
-        <li>Share</li>
-        <li>Discover</li>
-    </ul>
-</js-template>
+<js-view js-type="Header" js-model="HeaderModel" js-css="Header.css">
+    <div class="c-Header">
+        <div class="logoImage"></div>
+        <div class="logo" js-bind="text:logoText"></div>
+        <ul class="commands" js-repeat="command in commands">
+            <li class="command" js-bind="className.selected:$root.isViewingPage" js-userAction="click:$send(key, $root.pageKey)">
+                <a js-bind="href:url, text:text"></a>
+            </li>
+        </ul>
+    </div>
+</js-view>

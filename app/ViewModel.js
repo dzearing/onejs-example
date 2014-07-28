@@ -1,6 +1,7 @@
 define(["require", "exports", 'EventGroup'], function(require, exports, EventGroup) {
     var ViewModel = (function () {
         function ViewModel(data) {
+            this.id = ViewModel._instanceCount++;
             this.events = new EventGroup(this);
             this.events.declare('change');
 
@@ -10,7 +11,7 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
             this.events.dispose();
         };
 
-        ViewModel.prototype.setData = function (data, forceChange) {
+        ViewModel.prototype.setData = function (data, shouldFireChange) {
             var hasChanged = false;
 
             for (var i in data) {
@@ -31,7 +32,7 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
                 }
             }
 
-            if (hasChanged || forceChange) {
+            if ((hasChanged && shouldFireChange !== false) || shouldFireChange === true) {
                 this.events.raise('change');
             }
         };
@@ -46,6 +47,7 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
         ViewModel.prototype.change = function (args) {
             this.events.raise('change', args);
         };
+        ViewModel._instanceCount = 0;
         return ViewModel;
     })();
 
