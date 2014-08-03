@@ -12,7 +12,6 @@ var csstojs = require('gulp-csstojs');
 var filter = require('gulp-filter');
 var size = require('gulp-size');
 
-var gulpDebug = require('gulp-debug');
 
 var paths = {
     tempPath: 'temp',
@@ -30,7 +29,6 @@ gulp.task('tsc-preprocess', ['clean'], function() {
 
     return gulp.src(['node_modules/onejs-compiler/src/**/*', 'node_modules/onejs/src/**/*', 'src/**/*' ])
         .pipe(lessFilter)
-        .pipe(gulpDebug())
         .pipe(less())
         .pipe(cssMinify())
         .pipe(csstojs({
@@ -84,8 +82,9 @@ gulp.task('minify', ['rjs'], function() {
 
 gulp.task('copy-static-files', ['clean', 'tsc'], function() {
     return gulp.src(['node_modules/requirejs/require.js'])
+        .pipe(gulp.dest(paths.appPath))
         .pipe(uglify())
-        .pipe(gulp.dest(paths.appPath));
+        .pipe(gulp.dest(paths.appMinPath));
 });
 
 gulp.task('watch', function() {

@@ -26,16 +26,16 @@ class ExamplePaneBlock0Item extends View {
             "id": "0",
             "className": {
                 "isSelected": "$parent.isPaneSelected"
-            },
+            }
+        },
+        {
+            "id": "1",
+            "text": "pane.title",
             "events": {
                 "click": [
                     "$send(pane.key, $parent.selectedPane)"
                 ]
             }
-        },
-        {
-            "id": "1",
-            "text": "pane.title"
         },
         {
             "id": "2",
@@ -89,11 +89,11 @@ class ExamplePane extends ExamplePaneBase {
                 '</div>' +
                 '<div class="tab2col2">' +
                     '<div id="' + this.id + '_1" ' + this._genClass('pane', ['isSelected','isResultPaneVisible']) + '>' +
-                        '<div class="title">' +
+                        '<div id="' + this.id + '_2" class="title">' +
                             'Result' +
                         '</div>' +
                         '<div class="edit">' +
-                            '<iframe id="' + this.id + '_2" class="result"></iframe>' +
+                            '<iframe id="' + this.id + '_3" class="result"></iframe>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +
@@ -112,7 +112,10 @@ class ExamplePane extends ExamplePaneBase {
             "id": "1",
             "className": {
                 "isSelected": "isResultPaneVisible"
-            },
+            }
+        },
+        {
+            "id": "2",
             "events": {
                 "click": [
                     "$toggle(isResultPaneVisible)"
@@ -120,7 +123,7 @@ class ExamplePane extends ExamplePaneBase {
             }
         },
         {
-            "id": "2",
+            "id": "3",
             "childId": "resultFrame"
         }
     ];

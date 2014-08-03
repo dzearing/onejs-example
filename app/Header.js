@@ -21,6 +21,9 @@ define(["require", "exports", 'HeaderModel', 'DomUtils', 'View', 'Repeater', 'He
                     "events": {
                         "click": [
                             "$send(command.viewType, $root.pageType)"
+                        ],
+                        "touchstart": [
+                            "$send(command.viewType, $root.pageType)"
                         ]
                     }
                 },

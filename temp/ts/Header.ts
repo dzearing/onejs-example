@@ -28,6 +28,9 @@ class HeaderBlock0Item extends View {
             "events": {
                 "click": [
                     "$send(command.viewType, $root.pageType)"
+                ],
+                "touchstart": [
+                    "$send(command.viewType, $root.pageType)"
                 ]
             }
         },

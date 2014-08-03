@@ -3,7 +3,7 @@
         <div class="logoImage"></div>
         <div class="logo" js-bind="text:logoText"></div>
         <ul class="commands" js-repeat="command in commands">
-            <li class="command" js-bind="className.selected:$parent.isSelected" js-userAction="click:$send(command.viewType, $root.pageType)">
+            <li class="command" js-bind="className.selected:$parent.isSelected" js-userAction="click:$send(command.viewType, $root.pageType),touchstart:$send(command.viewType, $root.pageType)">
                 <a js-bind="href:command.url, text:command.text"></a>
             </li>
         </ul>

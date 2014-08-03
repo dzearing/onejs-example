@@ -1,16 +1,21 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript" data-main="main" src="app/require.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="app-min/require.js"></script>
     <script type="text/javascript">
-    requirejs.config({
-        baseUrl: 'app-min',
-        paths: {
-            'ace': 'http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace'
-        },
-        deps: [ 'main', 'AboutPage' ]
-    });
+        requirejs.config({
+            baseUrl: 'app-min',
+            paths: {
+                'ace': 'http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace'
+            },
+            deps: [ 'main', 'AboutPage' ],
+            callback: function() {
+            }
+
+        });
     </script>
+
 </head>
 <body></body>
 </html>

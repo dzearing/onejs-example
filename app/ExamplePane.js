@@ -17,16 +17,16 @@ define(["require", "exports", 'ExamplePaneModel', 'DomUtils', 'View', 'ExamplePa
                     "id": "0",
                     "className": {
                         "isSelected": "$parent.isPaneSelected"
-                    },
+                    }
+                },
+                {
+                    "id": "1",
+                    "text": "pane.title",
                     "events": {
                         "click": [
                             "$send(pane.key, $parent.selectedPane)"
                         ]
                     }
-                },
-                {
-                    "id": "1",
-                    "text": "pane.title"
                 },
                 {
                     "id": "2",
@@ -81,7 +81,10 @@ define(["require", "exports", 'ExamplePaneModel', 'DomUtils', 'View', 'ExamplePa
                     "id": "1",
                     "className": {
                         "isSelected": "isResultPaneVisible"
-                    },
+                    }
+                },
+                {
+                    "id": "2",
                     "events": {
                         "click": [
                             "$toggle(isResultPaneVisible)"
@@ -89,7 +92,7 @@ define(["require", "exports", 'ExamplePaneModel', 'DomUtils', 'View', 'ExamplePa
                     }
                 },
                 {
-                    "id": "2",
+                    "id": "3",
                     "childId": "resultFrame"
                 }
             ];
@@ -103,7 +106,7 @@ define(["require", "exports", 'ExamplePaneModel', 'DomUtils', 'View', 'ExamplePa
         };
 
         ExamplePane.prototype.onRenderHtml = function () {
-            return '' + '<div id="' + this.id + '_0" ' + this._genClass('c-ExamplePane', ['showResults', 'isResultPaneVisible']) + '>' + '<div class="tab2col1">' + this.examplePaneBlock0.renderHtml() + '</div>' + '<div class="tab2col2">' + '<div id="' + this.id + '_1" ' + this._genClass('pane', ['isSelected', 'isResultPaneVisible']) + '>' + '<div class="title">' + 'Result' + '</div>' + '<div class="edit">' + '<iframe id="' + this.id + '_2" class="result"></iframe>' + '</div>' + '</div>' + '</div>' + '</div>' + '';
+            return '' + '<div id="' + this.id + '_0" ' + this._genClass('c-ExamplePane', ['showResults', 'isResultPaneVisible']) + '>' + '<div class="tab2col1">' + this.examplePaneBlock0.renderHtml() + '</div>' + '<div class="tab2col2">' + '<div id="' + this.id + '_1" ' + this._genClass('pane', ['isSelected', 'isResultPaneVisible']) + '>' + '<div id="' + this.id + '_2" class="title">' + 'Result' + '</div>' + '<div class="edit">' + '<iframe id="' + this.id + '_3" class="result"></iframe>' + '</div>' + '</div>' + '</div>' + '</div>' + '';
         };
         return ExamplePane;
     })(ExamplePaneBase);
