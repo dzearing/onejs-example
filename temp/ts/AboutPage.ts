@@ -104,7 +104,7 @@ class AboutPage extends AboutPageBase {
                     '<span class="ref">' +
                         'js-type' +
                     '</span>' +
-                    'attribute indicating the class name. Within it, you can put whatever markup you want:' +
+                    'attribute indicating the class name. Within it, you can put whatever markup you want. This is piped through the onejs-compiler (here, running in the browser) which can output the view to a JavaScript (or TypeScript) class which can be intantiated and rendered on demand:' +
                 '</p>' +
                 this.examplePane.renderHtml() +
                 '<p>' +

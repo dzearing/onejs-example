@@ -31,7 +31,7 @@
 
         <h2>Views</h2>
 
-        <p>Let's start with a view template. A view template is defined by a <span class="ref">js-view</span> element, with a <span class="ref">js-type</span> attribute indicating the class name. Within it, you can put whatever markup you want:</p>
+        <p>Let's start with a view template. A view template is defined by a <span class="ref">js-view</span> element, with a <span class="ref">js-type</span> attribute indicating the class name. Within it, you can put whatever markup you want. This is piped through the onejs-compiler (here, running in the browser) which can output the view to a JavaScript (or TypeScript) class which can be intantiated and rendered on demand:</p>
 
         <js-view js-name="examplePane" js-type="ExamplePane" js-data="example1"></js-view>
 
