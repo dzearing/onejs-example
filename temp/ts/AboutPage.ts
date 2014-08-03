@@ -42,7 +42,7 @@ class AboutPage extends AboutPageBase {
                 '<h2>' +
                     'Why' +
                 '</h2>' +
-                '<ul>' +
+                '<ol>' +
                     '<li>' +
                         'Performance first. No virtual DOM required to minimize DOM changes.' +
                     '</li>' +
@@ -67,7 +67,7 @@ class AboutPage extends AboutPageBase {
                     '<li>' +
                         'Extendable. Easy to create your own product base classes. Easy to create your own binding and eventing helpers that can be invoked from views directly.' +
                     '</li>' +
-                '</ul>' +
+                '</ol>' +
                 '<h2>' +
                     'Get started now' +
                 '</h2>' +

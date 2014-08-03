@@ -23,6 +23,10 @@ h2 {
     color: @highlightColor;
 }
 
+ol {
+    list-style-image: url(data:image/gif;base64,R0lGODlhDQAJAKIAAAAAAP///1qe3cza5////wAAAAAAAAAAACH5BAEAAAQALAAAAAANAAkAAAMZSLoswpA4MaKa1eLluMvSFFLQtEUmiJJRAgA7);
+}
+
 p, li {
     font-size: .8em;
 }
@@ -32,8 +36,13 @@ li {
 }
 
  a {
+        color: @linkColor;
         padding: 2px 5px;
         text-decoration: none;
+
+        &:visited {
+            color: @linkColor;
+        }
 
         &:hover {
             text-decoration: underline;
