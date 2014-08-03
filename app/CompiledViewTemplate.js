@@ -22,6 +22,7 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
         CompiledViewTemplate.prototype.parseRootElement = function (element) {
             this.documentElement = element;
             this.name = element.getAttribute('js-type');
+            this.isPassThrough = Boolean(element.getAttribute('js-passThrough')) || false;
             this.baseViewType = element.getAttribute('js-baseType') || 'View';
             this.viewModelType = element.getAttribute('js-model') || '';
             this.options = element.getAttribute('js-options') || '';
@@ -146,10 +147,20 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
         CompiledViewTemplate.prototype._validateRepeatAttribute = function (element, elementDefintion, attributeValue) {
             element.removeAttribute('js-repeat');
 
-            var repeatSource = attributeValue.split(' in ')[1];
+            var repeatParts = attributeValue.split(' in ');
+            var repeatTarget = repeatParts[0];
+            var repeatSource = repeatParts[1];
+            var repeatIndex = '';
+
+            if (repeatTarget.indexOf(',')) {
+                repeatParts = repeatTarget.split(/[\s,]+/);
+                repeatTarget = repeatParts[0];
+                repeatIndex = repeatParts[1];
+            }
 
             var itemTemplate = new CompiledViewTemplate();
-            var repeatBlockType = this.name + 'Block' + this._blockCount++;
+            var blockCount = (this.parentTemplate ? this.parentTemplate._blockCount++ : this._blockCount++);
+            var repeatBlockType = (this.parentTemplate ? this.parentTemplate.name : this.name) + 'Block' + blockCount;
             var repeatItemType = repeatBlockType + 'Item';
             var rootSurfaceElement = element.cloneNode(true);
 
@@ -170,8 +181,10 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
             element.setAttribute('js-name', this._toCamelCase(repeatBlockType));
             element.setAttribute('js-type', repeatBlockType);
             element.setAttribute('js-baseType', 'Repeater');
-            element.setAttribute('js-options', '{ childViewType: \'' + repeatItemType + '\' }');
-            element.setAttribute('js-data', '{ items: this.getValue(\'' + repeatSource + '\') }');
+            element.setAttribute('js-passThrough', 'true');
+            element.setAttribute('js-options', '{ childViewType: \'' + repeatItemType + '\', itemName: \'' + '"' + repeatTarget + '"' + '\'' + (repeatIndex ? (', itemIndex: \'' + '"' + repeatIndex + '"\'') : '') + ' }');
+
+            element.setAttribute('js-data', '{ items: ' + repeatSource + ' }');
 
             itemTemplateElement.setAttribute('js-name', this._toCamelCase(repeatItemType));
             itemTemplateElement.setAttribute('js-type', repeatItemType);
@@ -189,7 +202,9 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
 
             element.appendChild(rootSurfaceElement);
 
+            itemTemplate.parentTemplate = this.parentTemplate || this;
             itemTemplate.parseRootElement(itemTemplateElement);
+
             this.subTemplates.push(itemTemplate);
 
             //containerTemplate.parseRootElement(containerViewElement);
@@ -209,7 +224,8 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
                 baseType: subTemplate.baseViewType,
                 options: element.getAttribute('js-options') || '',
                 data: element.getAttribute('js-data') || '',
-                shouldImport: (element.childNodes.length == 0)
+                shouldImport: (element.childNodes.length == 0),
+                template: subTemplate
             };
 
             if (!childView.shouldImport) {
@@ -282,38 +298,6 @@ define(["require", "exports", 'xmldom', './ViewTemplateDefinition'], function(re
             return true;
         };
 
-        /*
-        private _processRepeatAttribute(element, elementDefinition, attributeValue): boolean {
-        var subTemplate = new CompiledViewTemplate();
-        var repeatBlockName = this.name + 'Block' + this.subTemplates.length;
-        var firstChildElement;
-        
-        while (element.childNodes.length) {
-        if (!firstChildElement && element.childNodes[0].nodeType == element.ELEMENT_NODE) {
-        firstChildElement = element.childNodes[0];
-        }
-        element.removeChild(element.childNodes[0]);
-        }
-        
-        var baseTag = element.tagName;
-        
-        element.tagName = 'js-view';
-        element.setAttribute('js-name', this._toCamelCase(repeatBlockName));
-        element.setAttribute('js-type', 'Repeater');
-        element.setAttribute('js-data', '{ baseTag: \'' + baseTag + '\', childControl: ' + repeatBlockName + ' }');
-        
-        this._processControlElement(element);
-        
-        firstChildElement.setAttribute('js-view', repeatBlockName);
-        
-        subTemplate.parseRootElement(firstChildElement);
-        this.subTemplates.push(subTemplate);
-        
-        element.removeAttribute('js-repeat');
-        
-        return true;
-        }
-        */
         CompiledViewTemplate.prototype._processBindAttribute = function (element, elementDefinition, attributeValue) {
             var _this = this;
             var annotation = _this._getAnnotation(element);

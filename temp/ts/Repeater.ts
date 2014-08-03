@@ -8,15 +8,13 @@ import View = require('View');
 /// </summary>
 class Repeater extends View {
     viewName = 'Repeater';
-    childViewType = View;
     collectionName = 'items';
+    itemName = 'item';
+    indexName = 'index';
+    childViewType = View;
 
     onRenderHtml(): string {
         return '<div id="' + this.id + '_0">' + this.renderItems() + '</div>';
-    }
-
-    getViewModel(): any {
-        return this.parent.getViewModel();
     }
 
     renderItems() {
@@ -26,9 +24,16 @@ class Repeater extends View {
         this.clearChildren();
 
         for (var i = 0; items && i < items.length; i++) {
-            var newChild = this.addChild(new this.childViewType());
+            var newChild = this.addChild(new this.childViewType(), this.owner);
+            var childData;
 
-            newChild.setData(items[i]);
+            childData = {};
+            childData[this.collectionName] = items;
+            childData[this.itemName] = items[i];
+            childData[this.indexName] = i;
+
+            newChild.setData(childData);
+
             childHtml += newChild.renderHtml();
         }
 

@@ -1,0 +1,20 @@
+<js-view js-type="ExamplePane" js-baseType="ExamplePaneBase" js-model="ExamplePaneModel" js-css="ExamplePane.css">
+    <div class="c-ExamplePane" js-bind="className.showResults:isResultPaneVisible">
+        <div class="tab2col1">
+            <div js-repeat="pane in panes">
+                <div class="pane" js-bind="className.isSelected:$parent.isPaneSelected" js-userAction="click:$send(pane.key, $parent.selectedPane)">
+                    <div class="title" js-bind="text:pane.title"></div>
+                    <div js-id="editor" class="edit" js-bind="data-key:pane.key"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab2col2">
+            <div class="pane" js-bind="className.isSelected:isResultPaneVisible" js-userAction="click:$toggle(isResultPaneVisible)">
+                <div class="title">Result</div>
+                <div class="edit">
+                    <iframe js-id="resultFrame" class="result"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</js-view>

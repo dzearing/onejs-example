@@ -16,8 +16,10 @@ define(["require", "exports", 'View'], function(require, exports, View) {
         function Repeater() {
             _super.apply(this, arguments);
             this.viewName = 'Repeater';
-            this.childViewType = View;
             this.collectionName = 'items';
+            this.itemName = 'item';
+            this.indexName = 'index';
+            this.childViewType = View;
             this._bindings = [
                 {
                     "id": "0",
@@ -29,10 +31,6 @@ define(["require", "exports", 'View'], function(require, exports, View) {
             return '<div id="' + this.id + '_0">' + this.renderItems() + '</div>';
         };
 
-        Repeater.prototype.getViewModel = function () {
-            return this.parent.getViewModel();
-        };
-
         Repeater.prototype.renderItems = function () {
             var items = this.getValue(this.collectionName);
             var childHtml = '';
@@ -40,9 +38,16 @@ define(["require", "exports", 'View'], function(require, exports, View) {
             this.clearChildren();
 
             for (var i = 0; items && i < items.length; i++) {
-                var newChild = this.addChild(new this.childViewType());
+                var newChild = this.addChild(new this.childViewType(), this.owner);
+                var childData;
 
-                newChild.setData(items[i]);
+                childData = {};
+                childData[this.collectionName] = items;
+                childData[this.itemName] = items[i];
+                childData[this.indexName] = i;
+
+                newChild.setData(childData);
+
                 childHtml += newChild.renderHtml();
             }
 

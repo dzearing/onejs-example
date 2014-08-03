@@ -1,10 +1,10 @@
 define(["require", "exports", 'EventGroup'], function(require, exports, EventGroup) {
     var ViewModel = (function () {
         function ViewModel(data) {
+            this.data = {};
             this.id = ViewModel._instanceCount++;
             this.events = new EventGroup(this);
             this.events.declare('change');
-
             this.setData(data);
         }
         ViewModel.prototype.dispose = function () {
@@ -16,14 +16,14 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
 
             for (var i in data) {
                 if (data.hasOwnProperty(i)) {
-                    var oldValue = this[i];
+                    var oldValue = this.data[i];
                     var newValue = data[i];
 
                     if (oldValue !== newValue) {
                         if (oldValue && EventGroup.isDeclared(oldValue, 'change')) {
                             this.events.off(oldValue);
                         }
-                        this[i] = newValue;
+                        this.data[i] = newValue;
                         hasChanged = true;
                         if (newValue && EventGroup.isDeclared(newValue, 'change')) {
                             this.events.on(newValue, 'change', this.change);
@@ -38,10 +38,6 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
         };
 
         ViewModel.prototype.onInitialize = function () {
-        };
-        ViewModel.prototype.onActivate = function (subControls) {
-        };
-        ViewModel.prototype.onDeactivate = function () {
         };
 
         ViewModel.prototype.change = function (args) {

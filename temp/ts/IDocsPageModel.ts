@@ -1,0 +1,4 @@
+interface IDocsPageModel {
+}
+
+export = IDocsPageModel;

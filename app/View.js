@@ -1,4 +1,4 @@
-define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(require, exports, ViewModel, EventGroup, Encode) {
+define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], function(require, exports, ViewModel, EventGroup, Encode, DomUtils) {
     var ViewState;
     (function (ViewState) {
         ViewState[ViewState["CREATED"] = 0] = "CREATED";
@@ -14,7 +14,9 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             this._bindings = [];
             this._lastValues = {};
             this._state = 0 /* CREATED */;
+            this.loadStyles = DomUtils.loadStyles;
             this.events = new EventGroup(this);
+            this.activeEvents = new EventGroup(this);
             this.children = [];
             this._initialData = data;
         }
@@ -32,8 +34,21 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
 
                 this.clearChildren();
                 this.events.dispose();
+                this.activeEvents.dispose();
                 this._viewModel.dispose();
             }
+        };
+
+        View.prototype.onInitialize = function () {
+        };
+        View.prototype.onRenderHtml = function (viewModel) {
+            return '';
+        };
+        View.prototype.onActivate = function () {
+        };
+        View.prototype.onDeactivate = function () {
+        };
+        View.prototype.onViewModelChanged = function () {
         };
 
         View.prototype.setData = function (data, forceUpdate) {
@@ -50,12 +65,15 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                 this.id = this.viewName + '-' + (View._instanceCount++);
 
                 this._viewModel = new this.viewModelType(this._initialData);
-                this.onInitialize();
+                this.events.on(this._viewModel, 'change', this.evaluateView);
                 this._viewModel.onInitialize();
-            }
-        };
+                this.onViewModelChanged();
+                this.onInitialize();
 
-        View.prototype.onInitialize = function () {
+                for (var i = 0; i < this.children.length; i++) {
+                    this.children[i].initialize();
+                }
+            }
         };
 
         View.prototype.renderHtml = function () {
@@ -63,14 +81,11 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
 
             if (this._state !== 3 /* DISPOSED */) {
                 this.initialize();
+
                 html = this.onRenderHtml(this._viewModel);
             }
 
             return html;
-        };
-
-        View.prototype.onRenderHtml = function (viewModel) {
-            return '<div></div>';
         };
 
         View.prototype.activate = function () {
@@ -81,17 +96,12 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                 this._findElements();
                 this.updateView(true);
 
-                this.onActivate();
-
                 for (var i = 0; i < this.children.length; i++) {
                     this.children[i].activate();
                 }
 
-                this._viewModel.onActivate(this._subElements);
+                this.onActivate();
             }
-        };
-
-        View.prototype.onActivate = function () {
         };
 
         View.prototype.deactivate = function () {
@@ -101,21 +111,18 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                 this.onDeactivate();
 
                 this._subElements = null;
-                this.events.off();
+                this.activeEvents.off();
 
                 for (var i = 0; i < this.children.length; i++) {
                     this.children[i].deactivate();
                 }
-
-                this._viewModel.onDeactivate();
             }
         };
 
-        View.prototype.onDeactivate = function () {
-        };
-
-        View.prototype.addChild = function (view) {
+        View.prototype.addChild = function (view, owner) {
             view.parent = this;
+            view.owner = owner;
+
             this.children.push(view);
 
             return view;
@@ -138,29 +145,39 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             }
         };
 
+        View.prototype.evaluateView = function () {
+            this.onViewModelChanged();
+            this.updateView();
+        };
+
         View.prototype.updateView = function (updateValuesOnly) {
-            for (var i = 0; this._bindings && i < this._bindings.length; i++) {
-                var binding = this._bindings[i];
+            if (this._state === 2 /* ACTIVE */) {
+                for (var i = 0; this._bindings && i < this._bindings.length; i++) {
+                    var binding = this._bindings[i];
 
-                for (var bindingType in binding) {
-                    if (bindingType != 'id' && bindingType != 'events' && bindingType != 'childId' && bindingType != 'text' && bindingType != 'html') {
-                        for (var bindingDest in binding[bindingType]) {
-                            var sourcePropertyName = binding[bindingType][bindingDest];
-                            var lastValue = this._lastValues[sourcePropertyName];
-                            var currentValue = this.getValue(sourcePropertyName);
+                    for (var bindingType in binding) {
+                        if (bindingType != 'id' && bindingType != 'events' && bindingType != 'childId' && bindingType != 'text' && bindingType != 'html') {
+                            for (var bindingDest in binding[bindingType]) {
+                                var sourcePropertyName = binding[bindingType][bindingDest];
+                                var key = binding.id + bindingType + '.' + bindingDest;
+                                var lastValue = this._lastValues[key];
+                                var currentValue = this.getValue(sourcePropertyName);
 
-                            if (lastValue != currentValue) {
-                                var el = this._subElements[binding.id];
-                                this._lastValues[sourcePropertyName] = currentValue;
+                                if (lastValue != currentValue) {
+                                    var el = this._subElements[binding.id];
+                                    this._lastValues[key] = currentValue;
 
-                                if (!updateValuesOnly) {
-                                    if (bindingType == 'className') {
-                                        toggleClass(el, bindingDest, currentValue);
-                                    } else if (bindingType == 'attr') {
-                                        if (currentValue) {
-                                            el.setAttribute(bindingDest, currentValue);
-                                        } else {
-                                            el.removeAttribute(bindingDest);
+                                    if (!updateValuesOnly) {
+                                        console.log(this.viewName + ' updateView' + this.id);
+
+                                        if (bindingType == 'className') {
+                                            DomUtils.toggleClass(el, bindingDest, currentValue);
+                                        } else if (bindingType == 'attr') {
+                                            if (currentValue) {
+                                                el.setAttribute(bindingDest, currentValue);
+                                            } else {
+                                                el.removeAttribute(bindingDest);
+                                            }
                                         }
                                     }
                                 }
@@ -171,7 +188,86 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             }
         };
 
-        View.prototype.genStyle = function (defaultStyles, styleMap) {
+        View.prototype.getViewModel = function () {
+            return this._viewModel;
+        };
+
+        View.prototype.getValue = function (propertyName) {
+            var targetObject = this._getPropTarget(propertyName);
+
+            propertyName = this._getPropName(propertyName);
+
+            var targetValue = (targetObject && targetObject.target) ? targetObject.target[propertyName] : '';
+
+            if (typeof targetValue === 'function') {
+                targetValue = targetValue.call(targetObject, this._viewModel.data, propertyName);
+            }
+
+            return targetValue;
+        };
+
+        View.prototype.setValue = function (propertyName, propertyValue) {
+            var targetObject = this._getPropTarget(propertyName);
+            var targetViewModel = targetObject.view.getViewModel();
+
+            if (targetViewModel) {
+                var data = {};
+
+                data[this._getPropName(propertyName)] = propertyValue;
+                targetViewModel.setData(data);
+            }
+        };
+
+        View.prototype._getPropName = function (propertyName) {
+            var periodIndex = propertyName.lastIndexOf('.');
+
+            if (periodIndex > -1) {
+                propertyName = propertyName.substr(periodIndex + 1);
+            }
+
+            return propertyName;
+        };
+
+        View.prototype._getPropTarget = function (propertyName) {
+            var view = this;
+            var propTarget = view.getViewModel().data;
+            var periodIndex = propertyName.indexOf('.');
+            var propertyPart;
+
+            while (periodIndex > -1 && propTarget) {
+                propertyPart = propertyName.substr(0, periodIndex);
+
+                if (propertyPart === '$parent') {
+                    view = this.parent.owner || this.parent;
+                    propTarget = view ? view.getViewModel().data : null;
+                } else if (propertyPart === '$root') {
+                    view = this._getRoot();
+                    propTarget = view.getViewModel().data;
+                } else {
+                    propTarget = propTarget[propertyPart];
+                }
+                propertyName = propertyName.substr(periodIndex + 1);
+                periodIndex = propertyName.indexOf('.');
+            }
+
+            return {
+                originView: this,
+                view: view,
+                target: propTarget
+            };
+        };
+
+        View.prototype._getRoot = function () {
+            var root = this;
+
+            while (root.parent) {
+                root = root.parent;
+            }
+
+            return root;
+        };
+
+        View.prototype._genStyle = function (defaultStyles, styleMap) {
             defaultStyles = defaultStyles || '';
 
             var styles = defaultStyles.split(';');
@@ -198,7 +294,7 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             return 'style="' + styles.join('; ') + '"';
         };
 
-        View.prototype.genClass = function (defaultClasses, classMap) {
+        View.prototype._genClass = function (defaultClasses, classMap) {
             defaultClasses = defaultClasses || '';
 
             var classes = defaultClasses ? defaultClasses.split(' ') : [];
@@ -212,7 +308,7 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             return classes.length ? ('class="' + classes.join(' ') + '"') : '';
         };
 
-        View.prototype.genAttr = function (defaultAttributes, attributeMap) {
+        View.prototype._genAttr = function (defaultAttributes, attributeMap) {
             var attrString = '';
             var attributes = [];
 
@@ -226,85 +322,15 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
             return attributes.join(' ');
         };
 
-        View.prototype.genText = function (propertyName) {
+        View.prototype._genText = function (propertyName) {
             return Encode.toJS(this.getValue(propertyName));
         };
 
-        View.prototype.genHtml = function (propertyName) {
+        View.prototype._genHtml = function (propertyName) {
             return Encode.toHtml(this.getValue(propertyName));
         };
 
-        View.prototype.getViewModel = function () {
-            return this._viewModel;
-        };
-
-        View.prototype.getValue = function (propertyName) {
-            var targetObject = this._getPropTarget(propertyName);
-
-            propertyName = this._getPropName(propertyName);
-
-            var targetValue = targetObject ? targetObject[propertyName] : '';
-
-            if (typeof targetValue === 'function') {
-                targetValue = targetValue.call(targetObject, this._viewModel, propertyName);
-            }
-
-            return targetValue || '';
-        };
-
-        View.prototype.setValue = function (propertyName, propertyValue) {
-            var targetObject = this._getPropTarget(propertyName);
-
-            if (targetObject) {
-                var data = {};
-                data[this._getPropName(propertyName)] = propertyValue;
-                targetObject.setData(data);
-            }
-        };
-
-        View.prototype._getPropName = function (propertyName) {
-            var periodIndex = propertyName.lastIndexOf('.');
-
-            if (periodIndex > -1) {
-                propertyName = propertyName.substr(periodIndex + 1);
-            }
-
-            return propertyName;
-        };
-
-        View.prototype._getPropTarget = function (propertyName) {
-            var propTarget = this._viewModel;
-            var periodIndex = propertyName.indexOf('.');
-            var propertyPart;
-
-            while (periodIndex > -1 && propTarget) {
-                propertyPart = propertyName.substr(0, periodIndex);
-
-                if (propertyPart === '$parent') {
-                    propTarget = this.parent.getViewModel();
-                } else if (propertyPart === '$root') {
-                    propTarget = this._getRoot().getViewModel();
-                } else {
-                    propTarget = propTarget[propertyPart];
-                }
-                propertyName = propertyName.substr(periodIndex + 1);
-                periodIndex = propertyName.indexOf('.');
-            }
-
-            return propTarget;
-        };
-
-        View.loadStyles = function (rules) {
-            var styleEl = document.createElement('style');
-
-            styleEl.type = "text/css";
-            styleEl.appendChild(document.createTextNode(rules));
-            document.head.appendChild(styleEl);
-        };
-
         View.prototype._bindEvents = function () {
-            this.events.on(this._viewModel, 'change', this.updateView);
-
             for (var i = 0; i < this._bindings.length; i++) {
                 var binding = this._bindings[i];
 
@@ -314,7 +340,7 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                             var source = binding[bindingType][bindingDest];
                             if (source.indexOf('$parent') > -1) {
                                 this._viewModel.setData({
-                                    '$parent': this.parent.getViewModel()
+                                    '$parent': (this.owner || this.parent).getViewModel()
                                 }, false);
                             }
                             if (source.indexOf('$root') > -1) {
@@ -340,23 +366,13 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
                                 var sourceMethod = this._viewModel[target];
 
                                 if (sourceMethod) {
-                                    this.events.on(targetElement, eventName, sourceMethod);
+                                    this.activeEvents.on(targetElement, eventName, sourceMethod);
                                 }
                             }
                         }
                     }
                 }
             }
-        };
-
-        View.prototype._getRoot = function () {
-            var root = this;
-
-            while (root.parent) {
-                root = root.parent;
-            }
-
-            return root;
         };
 
         View.prototype._bindUtil = function (element, eventName, util) {
@@ -368,13 +384,15 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
 
             if (method) {
                 _this.events.on(element, eventName, function () {
-                    method.apply(_this, params);
+                    return method.apply(_this, params);
                 });
             }
         };
 
         View.prototype._toggle = function (propertyName) {
             this.setValue(propertyName, !this.getValue(propertyName));
+
+            return false;
         };
 
         View.prototype._send = function (sourcePropertyName, destinationPropertyName) {
@@ -403,21 +421,6 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode'], function(req
         View._instanceCount = 0;
         return View;
     })();
-
-    function toggleClass(element, className, isEnabled) {
-        var classList = element._classes = element._classes || (element.className ? element.className.split(' ') : []);
-        var index = classList.indexOf(className);
-
-        if (isEnabled) {
-            if (index == -1) {
-                classList.push(className);
-            }
-        } else if (index > -1) {
-            classList.splice(index, 1);
-        }
-
-        element.className = classList.join(' ');
-    }
 
     
     return View;

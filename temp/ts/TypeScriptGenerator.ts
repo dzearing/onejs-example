@@ -1,6 +1,5 @@
 import BaseGenerator = require('./BaseGenerator');
 import CompiledViewTemplate = require('./CompiledViewTemplate');
-//import Encode = require('onejs/src/Encode');
 
 /// <summary>
 /// Generates a TypeScript view class from a OneJS template.
@@ -15,6 +14,7 @@ class TypeScriptGenerator extends BaseGenerator {
         if (template.viewModelType) {
             _this._addLine('import ' + template.viewModelType + ' = require(\'' + template.viewModelType + '\');');
         }
+        _this._addLine('import DomUtils = require(\'DomUtils\');');
 
         _this._addChildViewImports(template);
 
@@ -23,7 +23,7 @@ class TypeScriptGenerator extends BaseGenerator {
             _this._addLine('import ' + safeName + ' = require(\'' + template.cssInclude + '\');');
 
             _this._addLine();
-            _this._addLine('View.loadStyles(' + safeName + '.styles);');
+            _this._addLine('DomUtils.loadStyles(' + safeName + '.styles);');
         }
 
         _this._addClass(template);
@@ -43,25 +43,33 @@ class TypeScriptGenerator extends BaseGenerator {
         this._addLine('class ' + template.name + ' extends ' + template.baseViewType + ' {');
         this._addProperties(template);
         this._addOnInitialize(template);
+        this._addOnViewModelChanged(template);
         this._addOnRenderHtml(template);
         this._addAnnotations(template);
         this._addLine('}');
     }
 
     private _addChildViewImports(template: CompiledViewTemplate) {
-        var uniqueControlTypes = {};
+        var uniqueControlTypes = { 'View': {} };
 
         uniqueControlTypes[template.baseViewType] = template;
 
-        for (var memberName in template.childViews) {
-            var childViewDefinition = template.childViews[memberName];
+        function findImports(currentTemplate) {
+            for (var memberName in currentTemplate.childViews) {
+                var childViewDefinition = currentTemplate.childViews[memberName];
 
-            if (childViewDefinition.shouldImport) {
-                uniqueControlTypes[childViewDefinition.type] = childViewDefinition;
+                if (childViewDefinition.shouldImport) {
+                    uniqueControlTypes[childViewDefinition.type] = childViewDefinition;
+                }
+
+                uniqueControlTypes[childViewDefinition.baseType] = childViewDefinition;
             }
-
-            uniqueControlTypes[childViewDefinition.baseType] = childViewDefinition;
+            for (var i = 0; i < currentTemplate.subTemplates.length; i++) {
+                findImports(currentTemplate.subTemplates[i]);
+            }
         }
+
+        findImports(template);
 
         for (var typeName in uniqueControlTypes) {
             this._addLine('import ' + typeName + ' = require(\'' + typeName + '\');');
@@ -69,26 +77,75 @@ class TypeScriptGenerator extends BaseGenerator {
     }
 
     private _addOnInitialize(template) {
-        var _this = this;
-        var _hasChildViews = false;
+        var hasSubBlocks = false;
+        var childView;
         var memberName;
 
         for (memberName in template.childViews) {
-            if (template.childViews[memberName].data) {
-                _hasChildViews = true;
+            childView = template.childViews[memberName].template;
+            if (childView.isPassThrough) {
+                hasSubBlocks = true;
                 break;
             }
         }
 
-        if (_hasChildViews) {
+        if (hasSubBlocks) {
+            this._addLine();
+            this._addLine('onInitialize() {', 1);
+
+            for (memberName in template.childViews) {
+                childView = template.childViews[memberName].template;
+
+                if (childView.isPassThrough) {
+                    this._addLine('this.' + memberName + '.owner = ' + (template.parentTemplate ? 'this.owner' : 'this') + ';', 2);
+                }
+            }
+
+            this._addLine('}', 1);
+        }
+    }
+
+    private _addOnViewModelChanged(template) {
+        var _this = this;
+        var hasChildViewBindings = false;
+        var memberName;
+
+        for (memberName in template.childViews) {
+            if (template.childViews[memberName].data) {
+                hasChildViewBindings = true;
+                break;
+            }
+        }
+
+        if (hasChildViewBindings) {
             _this._addLine();
-            _this._addLine('onInitialize() {', 1);
+            _this._addLine('onViewModelChanged() {', 1);
 
             for (var memberName in template.childViews) {
                 var childViewDefinition = template.childViews[memberName];
 
                 if (childViewDefinition.data) {
-                    this._addLine('this.' + memberName + '.setData(' + childViewDefinition.data + ');', 2);
+                    var data = childViewDefinition.data;
+
+                    if (data.indexOf('{') == 0) {
+                        data = data.substr(1, data.length - 2);
+                        var dataList = data.split(',');
+                        var isFirst = true;
+
+                        data = '{';
+                        for (var listIndex = 0; listIndex < dataList.length; listIndex++) {
+                            var parts = dataList[listIndex].trim().split(/[\s:]+/);
+
+                            data += (isFirst ? '' : ',') + ' ' + parts[0].trim() + ': this.getValue(\'' + parts[1].trim() + '\')';
+                            isFirst = false;
+                        }
+                        data += ' }';
+
+                    } else {
+                        data = 'this.getValue(\'' + data + '\')';
+                    }
+
+                    this._addLine('this.' + memberName + '.setData(' + data + ');', 2);
                 }
             }
 
@@ -102,7 +159,7 @@ class TypeScriptGenerator extends BaseGenerator {
         if (template.options) {
             var optionsBag = eval('(' + template.options + ')');
             for (var optionName in optionsBag) {
-                this._addLine(optionName + ' = ' + optionsBag[optionName] +';', 1);
+                this._addLine(optionName + ' = ' + optionsBag[optionName] + ';', 1);
             }
         }
 
@@ -114,7 +171,7 @@ class TypeScriptGenerator extends BaseGenerator {
         for (var memberName in template.childViews) {
             var childViewDefinition = template.childViews[memberName];
 
-            this._addLine('private ' + memberName + ': ' + childViewDefinition.type + ' = <' + childViewDefinition.type + '>this.addChild(new ' + childViewDefinition.type + '());', 1);
+            this._addLine(memberName + ' = <any>this.addChild(new ' + childViewDefinition.type + '());', 1);
         }
     }
     /*
@@ -169,9 +226,9 @@ class TypeScriptGenerator extends BaseGenerator {
 
             _this._addLine("'<" + tagName +
                 this._getIdAttribute(element) +
-                this._getCreationMethod(element, 'genStyle', 'css', 'style') +
-                this._getCreationMethod(element, 'genClass', 'className', 'class') +
-                this._getCreationMethod(element, 'genAttr', 'attr') +
+                this._getCreationMethod(element, '_genStyle', 'css', 'style') +
+                this._getCreationMethod(element, '_genClass', 'className', 'class') +
+                this._getCreationMethod(element, '_genAttr', 'attr') +
                 this._getRemainingAttributes(element) +
                 closingTag, indent);
 
@@ -190,11 +247,11 @@ class TypeScriptGenerator extends BaseGenerator {
 
         if (annotation) {
             if (annotation.text) {
-                this._addLine('this.genText(\'' + annotation.text + '\') +', indent);
+                this._addLine('this._genText(\'' + annotation.text + '\') +', indent);
             }
 
             if (annotation.html) {
-                this._addLine('this.genHtml(\'' + annotation.text + '\') +', indent);
+                this._addLine('this._genHtml(\'' + annotation.text + '\') +', indent);
             }
         }
 
@@ -211,7 +268,7 @@ class TypeScriptGenerator extends BaseGenerator {
                 var text = childNode.textContent.trim();
                 if (text) {
                     //this._addLine("'" + Encode.toHtml(text) + "' +", indent);
-                    this._addLine("'" + text + "' +", indent);
+                    this._addLine("'" + _toHtml(text) + "' +", indent);
                 }
             }
         }
@@ -289,6 +346,15 @@ class TypeScriptGenerator extends BaseGenerator {
 
         return attributeContent.length ? (' ' + attributeContent.join(' ')) : '';
     }
+}
+
+function _toHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
 
 export = TypeScriptGenerator;

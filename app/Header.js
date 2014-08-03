@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'Header.css'], function(require, exports, HeaderModel, View, Repeater, Headercss) {
-    View.loadStyles(Headercss.styles);
+define(["require", "exports", 'HeaderModel', 'DomUtils', 'View', 'Repeater', 'Header.css'], function(require, exports, HeaderModel, DomUtils, View, Repeater, Headercss) {
+    DomUtils.loadStyles(Headercss.styles);
 
     var HeaderBlock0Item = (function (_super) {
         __extends(HeaderBlock0Item, _super);
@@ -16,25 +16,25 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'Header.css'], 
                 {
                     "id": "0",
                     "className": {
-                        "selected": "$root.isViewingPage"
+                        "selected": "$parent.isSelected"
                     },
                     "events": {
                         "click": [
-                            "$send(key, $root.pageKey)"
+                            "$send(command.viewType, $root.pageType)"
                         ]
                     }
                 },
                 {
                     "id": "1",
                     "attr": {
-                        "href": "url"
+                        "href": "command.url"
                     },
-                    "text": "text"
+                    "text": "command.text"
                 }
             ];
         }
         HeaderBlock0Item.prototype.onRenderHtml = function () {
-            return '' + '<li id="' + this.id + '_0" ' + this.genClass('command', ['selected', '$root.isViewingPage']) + '>' + '<a id="' + this.id + '_1" ' + this.genAttr('', ['href', 'url']) + '>' + this.genText('text') + '</a>' + '</li>' + '';
+            return '' + '<li id="' + this.id + '_0" ' + this._genClass('command', ['selected', '$parent.isSelected']) + '>' + '<a id="' + this.id + '_1" ' + this._genAttr('', ['href', 'command.url']) + '>' + this._genText('command.text') + '</a>' + '</li>' + '';
         };
         return HeaderBlock0Item;
     })(View);
@@ -45,6 +45,7 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'Header.css'], 
             _super.apply(this, arguments);
             this.viewName = 'HeaderBlock0';
             this.childViewType = HeaderBlock0Item;
+            this.itemName = "command";
             this._bindings = [
                 {
                     "id": "0",
@@ -73,11 +74,15 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'Header.css'], 
             ];
         }
         Header.prototype.onInitialize = function () {
+            this.headerBlock0.owner = this;
+        };
+
+        Header.prototype.onViewModelChanged = function () {
             this.headerBlock0.setData({ items: this.getValue('commands') });
         };
 
         Header.prototype.onRenderHtml = function () {
-            return '' + '<div class="c-Header">' + '<div class="logoImage"></div>' + '<div id="' + this.id + '_0" class="logo">' + this.genText('logoText') + '</div>' + this.headerBlock0.renderHtml() + '</div>' + '';
+            return '' + '<div class="c-Header">' + '<div class="logoImage"></div>' + '<div id="' + this.id + '_0" class="logo">' + this._genText('logoText') + '</div>' + this.headerBlock0.renderHtml() + '</div>' + '';
         };
         return Header;
     })(View);

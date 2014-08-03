@@ -9,35 +9,43 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
         __extends(HeaderModel, _super);
         function HeaderModel() {
             _super.apply(this, arguments);
-            this.logoText = 'OneJS';
-            this.commands = [
-                {
-                    key: 'about',
-                    text: 'About',
-                    url: '#/about'
-                },
-                {
-                    key: 'docs',
-                    text: 'Documentation',
-                    url: '#/docs'
-                },
-                {
-                    key: 'create',
-                    text: 'Create',
-                    url: '#/create'
-                },
-                {
-                    key: 'share',
-                    text: 'Share',
-                    url: '#/share'
-                },
-                {
-                    key: 'discover',
-                    text: 'Discover',
-                    url: '#/discover'
+            this.data = {
+                logoText: 'OneJS',
+                commands: [
+                    {
+                        key: 'about',
+                        viewType: 'AboutPage',
+                        text: 'About',
+                        url: '#/about'
+                    }, {
+                        key: 'docs',
+                        viewType: 'DocsPage',
+                        text: 'Documentation',
+                        url: '#/docs'
+                    }, {
+                        key: 'create',
+                        viewType: 'AboutPage',
+                        text: 'Create',
+                        url: '#/create'
+                    }, {
+                        key: 'share',
+                        viewType: 'AboutPage',
+                        text: 'Share',
+                        url: '#/share'
+                    }, {
+                        key: 'discover',
+                        viewType: 'AboutPage',
+                        text: 'Discover',
+                        url: '#/discover'
+                    }],
+                isSelected: function (data) {
+                    return document.location.hash === data.command.url;
                 }
-            ];
+            };
         }
+        HeaderModel.prototype.onInitialize = function () {
+            this.events.on(window, 'hashchange', this.change);
+        };
         return HeaderModel;
     })(ViewModel);
 
