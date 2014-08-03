@@ -1,8 +1,8 @@
 import AboutPageModel = require('AboutPageModel');
-import DomUtils = require('DomUtils');
 import View = require('View');
 import AboutPageBase = require('AboutPageBase');
 import ExamplePane = require('ExamplePane');
+import DomUtils = require('DomUtils');
 import AboutPagecss = require('AboutPage.css');
 
 DomUtils.loadStyles(AboutPagecss.styles);
@@ -30,14 +30,14 @@ class AboutPage extends AboutPageBase {
                     'OneJS is a small set of core classes which enable you to build easily reusable web components in an Model View ViewModel (MVVM) pattern.' +
                 '</p>' +
                 '<p>' +
-                    'Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones web page with data binding support only adds' +
+                    'Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones reusable web component, merged in wtih the common core including data binding support adds' +
                     '<span class="ref">' +
                         '5k (gzipped)' +
                     '</span>' +
-                    'to the download size.' +
+                    'to the download size. This means sites won&#39;t have to download a larger  framework just to use your component.' +
                 '</p>' +
                 '<p>' +
-                    'For production purposes, OneJS uses a compiler to compile Views (templates) into TypeScript classes. These can be mixed together with other components, and TypeScript type checking can catch your bugs early. While this tranlates down into JavaScript classes for current browsers, it ensures future compatibility with ECMAScript 6 once it is fully supported.' +
+                    'For production purposes, OneJS uses a compiler to compile Views (templates) into TypeScript classes. These can be mixed together with other components, and TypeScript type checking can catch your bugs early. When we&#39;re ready to update our site, we pipe all classes through compilers/optimizers (tsc, less, cssminify, uglify2, etc) to provide a fully optimized site.' +
                 '</p>' +
                 '<h2>' +
                     'Why' +
@@ -71,18 +71,20 @@ class AboutPage extends AboutPageBase {
                 '<h2>' +
                     'Get started now' +
                 '</h2>' +
-                '<pre>' +
-                    'git clone https://github.com/dzearing/od-wireframe' +
-                '</pre>' +
-                '<pre>' +
-                    'cd od-wireframe' +
-                '</pre>' +
-                '<pre>' +
-                    'npm i' +
-                '</pre>' +
-                '<pre>' +
-                    'gulp' +
-                '</pre>' +
+                '<div class="code">' +
+                    '<div>' +
+                        'git clone https://github.com/dzearing/od-wireframe' +
+                    '</div>' +
+                    '<div>' +
+                        'cd od-wireframe' +
+                    '</div>' +
+                    '<div>' +
+                        'npm i' +
+                    '</div>' +
+                    '<div>' +
+                        'gulp' +
+                    '</div>' +
+                '</div>' +
                 '<p>' +
                     'Then open the index.html locally to render.' +
                 '</p>' +
@@ -154,7 +156,7 @@ class AboutPage extends AboutPageBase {
                     '</li>' +
                     '<li>' +
                         '<a href="#/docs">' +
-                            'Example: binding classNames' +
+                            'Example: binding class name toggles' +
                         '</a>' +
                     '</li>' +
                     '<li>' +

@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'ExamplePaneModel', 'DomUtils', 'View', 'ExamplePaneBase', 'Repeater', 'ExamplePane.css'], function(require, exports, ExamplePaneModel, DomUtils, View, ExamplePaneBase, Repeater, ExamplePanecss) {
+define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Repeater', 'DomUtils', 'ExamplePane.css'], function(require, exports, ExamplePaneModel, View, ExamplePaneBase, Repeater, DomUtils, ExamplePanecss) {
     DomUtils.loadStyles(ExamplePanecss.styles);
 
     var ExamplePaneBlock0Item = (function (_super) {

@@ -1,7 +1,7 @@
 import HeaderModel = require('HeaderModel');
-import DomUtils = require('DomUtils');
 import View = require('View');
 import Repeater = require('Repeater');
+import DomUtils = require('DomUtils');
 import Headercss = require('Header.css');
 
 DomUtils.loadStyles(Headercss.styles);

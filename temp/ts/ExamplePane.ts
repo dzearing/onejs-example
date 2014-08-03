@@ -1,8 +1,8 @@
 import ExamplePaneModel = require('ExamplePaneModel');
-import DomUtils = require('DomUtils');
 import View = require('View');
 import ExamplePaneBase = require('ExamplePaneBase');
 import Repeater = require('Repeater');
+import DomUtils = require('DomUtils');
 import ExamplePanecss = require('ExamplePane.css');
 
 DomUtils.loadStyles(ExamplePanecss.styles);

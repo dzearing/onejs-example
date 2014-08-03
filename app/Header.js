@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'HeaderModel', 'DomUtils', 'View', 'Repeater', 'Header.css'], function(require, exports, HeaderModel, DomUtils, View, Repeater, Headercss) {
+define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'Header.css'], function(require, exports, HeaderModel, View, Repeater, DomUtils, Headercss) {
     DomUtils.loadStyles(Headercss.styles);
 
     var HeaderBlock0Item = (function (_super) {

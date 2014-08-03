@@ -1,10 +1,15 @@
 <js-view js-type="AboutPage" js-baseType="AboutPageBase" js-model="AboutPageModel" js-css="AboutPage.css">
     <div class='c-AboutPage page'>
         <h1>OneJS is a tiny web framework.</h1>
+
         <p>OneJS is a small set of core classes which enable you to build easily reusable web components in an Model View ViewModel (MVVM) pattern.</p>
-        <p>Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones web page with data binding support only adds <span class="ref">5k (gzipped)</span> to the download size.</p>
-        <p>For production purposes, OneJS uses a compiler to compile Views (templates) into TypeScript classes. These can be mixed together with other components, and TypeScript type checking can catch your bugs early. While this tranlates down into JavaScript classes for current browsers, it ensures future compatibility with ECMAScript 6 once it is fully supported.</p>
+
+        <p>Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones reusable web component, merged in wtih the common core including data binding support adds <span class="ref">5k (gzipped)</span> to the download size. This means sites won't have to download a larger  framework just to use your component.</p>
+
+        <p>For production purposes, OneJS uses a compiler to compile Views (templates) into TypeScript classes. These can be mixed together with other components, and TypeScript type checking can catch your bugs early. When we're ready to update our site, we pipe all classes through compilers/optimizers (tsc, less, cssminify, uglify2, etc) to provide a fully optimized site.</p>
+
         <h2>Why</h2>
+
         <ol>
             <li>Performance first. No virtual DOM required to minimize DOM changes.</li>
             <li>Small footprint. (8k gzipped) RequireJS is the only dependency.</li>
@@ -18,10 +23,12 @@
 
         <h2>Get started now</h2>
 
-        <pre>git clone https://github.com/dzearing/od-wireframe</pre>
-        <pre>cd od-wireframe</pre>
-        <pre>npm i</pre>
-        <pre>gulp</pre>
+        <div class="code">
+            <div>git clone https://github.com/dzearing/od-wireframe</div>
+            <div>cd od-wireframe</div>
+            <div>npm i</div>
+            <div>gulp</div>
+        </div>
 
         <p>Then open the index.html locally to render.</p>
 
@@ -49,7 +56,7 @@
             <li><a href="#/docs">Example: binding text</a></li>
             <li><a href="#/docs">Example: binding html</a></li>
             <li><a href="#/docs">Example: binding attributes</a></li>
-            <li><a href="#/docs">Example: binding classNames</a></li>
+            <li><a href="#/docs">Example: binding class name toggles</a></li>
             <li><a href="#/docs">Example: repeating</a></li>
             <li><a href="#/docs">Example: conditionals</a></li>
         </ul>

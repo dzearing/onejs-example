@@ -4,8 +4,8 @@ main.js
 EventGroup.js
 ViewModel.js
 ExampleAppModel.js
-DomUtils.js
 Encode.js
+DomUtils.js
 View.js
 ExampleAppBase.js
 HeaderModel.js

@@ -1,9 +1,9 @@
 import ExampleAppModel = require('ExampleAppModel');
-import DomUtils = require('DomUtils');
 import View = require('View');
 import ExampleAppBase = require('ExampleAppBase');
 import Header = require('Header');
 import ContentControl = require('ContentControl');
+import DomUtils = require('DomUtils');
 import ExampleAppcss = require('ExampleApp.css');
 
 DomUtils.loadStyles(ExampleAppcss.styles);

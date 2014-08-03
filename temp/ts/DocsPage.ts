@@ -1,5 +1,5 @@
-import DomUtils = require('DomUtils');
 import View = require('View');
+import DomUtils = require('DomUtils');
 import DocsPagecss = require('DocsPage.css');
 
 DomUtils.loadStyles(DocsPagecss.styles);

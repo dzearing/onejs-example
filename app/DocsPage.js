@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'DomUtils', 'View', 'DocsPage.css'], function(require, exports, DomUtils, View, DocsPagecss) {
+define(["require", "exports", 'View', 'DomUtils', 'DocsPage.css'], function(require, exports, View, DomUtils, DocsPagecss) {
     DomUtils.loadStyles(DocsPagecss.styles);
 
     var DocsPage = (function (_super) {

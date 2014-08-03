@@ -10,8 +10,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        bottom: 0;
-        right: 0;
+        height: 100%;
+        width: 100%;
     }
 
     &.showResults .tab2col1 {
@@ -23,7 +23,7 @@
         position: absolute;
         left: 50%;
         top: 0;
-        right: 0;
+        width: 50%;
         height: 35px;
         border-left: 1px solid @lightBGColor;
     }
@@ -83,8 +83,24 @@
             }
         }
     }
+}
 
+@media (max-width: 640px) {
+    .c-ExamplePane {
+        height: 480px;
 
+        .tab2col1 {
+            height: 50%;
+        }
 
+        &.showResults .tab2col1 {
+            width: 100%;
+        }
 
+        .tab2col2 {
+             left: 0%;
+             top: 240px;
+             width: 100%;
+        }
+    }
 }

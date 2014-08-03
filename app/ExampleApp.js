@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'ExampleAppModel', 'DomUtils', 'ExampleAppBase', 'Header', 'ContentControl', 'ExampleApp.css'], function(require, exports, ExampleAppModel, DomUtils, ExampleAppBase, Header, ContentControl, ExampleAppcss) {
+define(["require", "exports", 'ExampleAppModel', 'ExampleAppBase', 'Header', 'ContentControl', 'DomUtils', 'ExampleApp.css'], function(require, exports, ExampleAppModel, ExampleAppBase, Header, ContentControl, DomUtils, ExampleAppcss) {
     DomUtils.loadStyles(ExampleAppcss.styles);
 
     var ExampleApp = (function (_super) {
