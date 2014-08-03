@@ -1,0 +1,1 @@
+var __extends=this.__extends||function(t,n){function e(){this.constructor=t}for(var r in n)n.hasOwnProperty(r)&&(t[r]=n[r]);e.prototype=n.prototype,t.prototype=new e};define(["require","exports","View"],function(t,n,e){var r=function(t){function n(){t.apply(this,arguments)}return __extends(n,t),n}(e);return r});

@@ -28,7 +28,8 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
 
                 if (pane.hasEditor) {
                     _this._editors[pane.key] = {
-                        pane: pane
+                        pane: pane,
+                        editor: null
                     };
                 }
             }

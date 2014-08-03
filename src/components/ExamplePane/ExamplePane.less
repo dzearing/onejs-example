@@ -1,17 +1,10 @@
-.user-select (@val) {
-    -webkit-touch-callout:  @val;
-    -webkit-user-select:    @val;
-    -khtml-user-select:     @val;
-    -moz-user-select:       @val;
-    -ms-user-select:        @val;
-    user-select:            @val;
-}
+@import "../CommonRules";
 
 .c-ExamplePane {
     height: 240px;
-    background: #EEE;
+    background: @lighterBGColor;
     position: relative;
-    color: #666;
+    color: @mediumColor;
 
     .tab2col1 {
         position: absolute;
@@ -32,7 +25,7 @@
         top: 0;
         right: 0;
         height: 35px;
-        border-left: 1px solid #DDD;
+        border-left: 1px solid @lightBGColor;
     }
 
     &.showResults .tab2col2 {
@@ -52,11 +45,10 @@
             font-size: 13px;
             cursor: pointer;
             .user-select(none);
-            background: #eee;
         }
 
         .title:hover {
-            background: #e8e8e8;
+            background: @lighterBGColor;
         }
 
         .edit {
@@ -66,7 +58,7 @@
             right: 0;
             top: 35px;
             bottom: 0;
-            border-top: 1px solid #DDD;
+            border-top: 1px solid @lightBGColor;
         }
 
         .result {
@@ -78,9 +70,9 @@
 
         &.isSelected  {
             .title {
-                border-top: 5px solid #5A9EDD;
+                border-top: 5px solid @highlightColor;
 
-                background: #e8e8e8 linear-gradient(to top,rgba(232,232,232,0) 0,rgba(232,232,232,.4) 78%,rgba(90,158,221,.2) 100%);
+                background: @lightestBGColor linear-gradient(to top,rgba(232,232,232,0) 0,rgba(232,232,232,.4) 78%,rgba(90,158,221,.2) 100%);
                 line-height: 25px;
                 height: 30px;
             }

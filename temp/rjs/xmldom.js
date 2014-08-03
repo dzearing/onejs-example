@@ -1,0 +1,1 @@
+define(["require","exports"],function(e,r){r.DOMParser=window.DOMParser});

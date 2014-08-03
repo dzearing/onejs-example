@@ -22,7 +22,8 @@ class ExamplePaneBase extends View {
 
             if (pane.hasEditor) {
                 _this._editors[pane.key] = {
-                    pane: pane
+                    pane: pane,
+                    editor: null
                 };
             }
         }
