@@ -32,7 +32,7 @@ class AboutPage extends AboutPageBase {
                     'OneJS is a small set of core classes which enable you to build easily reusable web components in an Model View ViewModel (MVVM) pattern.' +
                 '</p>' +
                 '<p>' +
-                    'Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones reusable web component, merged in wtih the common core including data binding support adds' +
+                    'Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones reusable web component, merged in with the common core including data binding support adds' +
                     '<span class="ref">' +
                         '5k (gzipped)' +
                     '</span>' +
