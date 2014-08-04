@@ -8,7 +8,8 @@ class ExampleAppModel extends ViewModel {
         isViewingPage: function(data) {
             return (data && data.command && data.command.pageType == this.pageType);
         }
-    }
+    };
+
 }
 
 export = ExampleAppModel;

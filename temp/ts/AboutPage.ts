@@ -12,12 +12,14 @@ class AboutPage extends AboutPageBase {
     viewModelType = AboutPageModel;
     viewsExamplePane = <any>this.addChild(new ExamplePane());
     viewModelsExamplePane = <any>this.addChild(new ExamplePane());
-    example3Pane = <any>this.addChild(new ExamplePane());
+    viewInViewExamplePane = <any>this.addChild(new ExamplePane());
+    eventingExamplePane = <any>this.addChild(new ExamplePane());
 
     onViewModelChanged() {
         this.viewsExamplePane.setData(this.getValue('viewsExample'));
         this.viewModelsExamplePane.setData(this.getValue('viewModelsExample'));
-        this.example3Pane.setData(this.getValue('viewInViewExample'));
+        this.viewInViewExamplePane.setData(this.getValue('viewInViewExample'));
+        this.eventingExamplePane.setData(this.getValue('eventingExample'));
     }
 
     onRenderHtml(): string {
@@ -202,7 +204,36 @@ class AboutPage extends AboutPageBase {
                     '</span>' +
                     'attribute is used to pass along a value in the parent&#39;s view model.' +
                 '</p>' +
-                this.example3Pane.renderHtml() +
+                this.viewInViewExamplePane.renderHtml() +
+                '<h2>' +
+                    'Adding eventing' +
+                '</h2>' +
+                '<p class="warn">' +
+                    'This is TBD. Element events probably should only be directly hooked up to the view itself, not to the view model. However there can be utilities to auto forward calls to the view model to make the &quot;consumer provides the handler&quot; scenario require no code.' +
+                '</p>' +
+                '<p>' +
+                    'Eventing in OneJS templates can be handled in a few different ways:' +
+                '</p>' +
+                '<ul>' +
+                    '<li>' +
+                        'Auto bind an event to a handler on the view model using the' +
+                        '<span class="ref">' +
+                            'js-userAction' +
+                        '</span>' +
+                        'attribute. This is useful when a consumer of the view might want to pass in their event handling implementation to the view.' +
+                    '</li>' +
+                    '<li>' +
+                        'Bind an event to a helper to do common things, like' +
+                        '<span class="ref">' +
+                            '$toggle' +
+                        '</span>' +
+                        ', shown below, which can toggle a state.' +
+                    '</li>' +
+                    '<li>' +
+                        'Manually bind events within a base view. (TBD. This might be auto.) This is typically done when the event handling should be abstracted from the consumer. The base view can for example gather DOM state and translate that state to the view model.' +
+                    '</li>' +
+                '</ul>' +
+                this.eventingExamplePane.renderHtml() +
                 '<h2>' +
                     'Adding view specific logic' +
                 '</h2>' +

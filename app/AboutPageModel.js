@@ -82,7 +82,27 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                             updatesResults: true,
                             editorType: 'typescript',
                             title: 'AppModel.js',
-                            content: 'import ViewModel = require(\'ViewModel\');\n\nclass AppModel extends ViewModel {\n    data = {\n        tom: {\n            title: \'Tom\\\'s favs\',\n            things: [\n                \'Watches\',\n                \'Football\'\n            ]\n        },\n        bob: {\n            title: \'Bob\\\'s favs\',\n            things: [\n                \'Movies\'\n            ]\n        }\n   };\n}\n\nexport = FavoriteThingsModel;\n'
+                            content: 'import ViewModel = require(\'ViewModel\');\n\nclass AppModel extends ViewModel {\n    data = {\n        tom: {\n            title: \'Tom\\\'s favs\',\n            things: [\n                \'Watches\',\n                \'Football\'\n            ]\n        },\n        bob: {\n            title: \'Bob\\\'s favs\',\n            things: [\n                \'Movies\'\n            ]\n        }\n   };\n}\n\nexport = AppModel;\n'
+                        }],
+                    selectedPane: 'html',
+                    isResultPaneVisible: false
+                },
+                eventingExample: {
+                    panes: [
+                        {
+                            key: 'html',
+                            hasEditor: true,
+                            editorType: 'html',
+                            updatesResults: true,
+                            title: 'ToggleButton.html',
+                            content: '<js-view js-type="ToggleButton" js-model="ToggleButtonModel">\n    <button\n        js-bind="text:title,className.isActive:isActive"\n        js-userAction="click:onClick,click:$toggle(isActive)"></button>\n</js-view>\n'
+                        }, {
+                            key: 'viewmodel',
+                            hasEditor: true,
+                            updatesResults: true,
+                            editorType: 'typescript',
+                            title: 'ToggleButtonModel.js',
+                            content: 'import ViewModel = require(\'ViewModel\');\n\nclass ToggleButtonModel extends ViewModel {\n    data = {\n        isActive: false,\n        onClick: function() { alert(\'toggling!\'); }\n   };\n}\n\nexport = ToggleButtonModel;\n'
                         }],
                     selectedPane: 'html',
                     isResultPaneVisible: false

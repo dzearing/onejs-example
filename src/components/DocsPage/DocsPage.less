@@ -1,3 +1,43 @@
+@import "../CommonRules";
+
 .c-DocsPage {
 
+    .index {
+        position: fixed;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        width: 200px;
+        background: @lightestBGColor;
+        text-align: left;
+        overflow-y: auto;
+
+        h3 {
+            padding: 20px 0 10px 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                margin: 0;
+                padding: 2px 15px;
+                font-size: @smallerFontSize;
+                cursor: pointer;
+
+                &:hover {
+                    background: @lighterBGColor;
+                }
+            }
+
+
+        }
+    }
+
+    .content {
+        margin-left: 215px;
+        text-align: left;
+    }
 }

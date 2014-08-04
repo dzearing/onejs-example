@@ -69,7 +69,23 @@
 
         <p>In the example below, we define an App view that renders two instances of the FavoriteThings control within using the <span class="ref">js-view</span> element. The <span class="ref">js-name</span> attribute defines the member name of the child, in case we want to reference it later in a view base. The <span class="ref">js-type</span> attribute defines the view type, which the generated class will automatically import and inject in the generated markup. The <span class="ref">js-data</span> attribute is used to pass along a value in the parent's view model.</p>
 
-        <js-view js-name="example3Pane" js-type="ExamplePane" js-data="viewInViewExample"></js-view>
+        <js-view js-name="viewInViewExamplePane" js-type="ExamplePane" js-data="viewInViewExample"></js-view>
+
+        <h2>Adding eventing</h2>
+
+        <p class="warn">This is TBD. Element events probably should only be directly hooked up to the view itself, not to the view model. However there can be utilities to auto forward calls to the view model to make the "consumer provides the handler" scenario require no code.</p>
+
+        <p>Eventing in OneJS templates can be handled in a few different ways:</p>
+
+        <ul>
+            <li>Auto bind an event to a handler on the view model using the <span class="ref">js-userAction</span> attribute. This is useful when a consumer of the view might want to pass in their event handling implementation to the view.</li>
+
+            <li>Bind an event to a helper to do common things, like <span class="ref">$toggle</span>, shown below, which can toggle a state.</li>
+
+            <li>Manually bind events within a base view. (TBD. This might be auto.) This is typically done when the event handling should be abstracted from the consumer. The base view can for example gather DOM state and translate that state to the view model.</li>
+        </ul>
+
+        <js-view js-name="eventingExamplePane" js-type="ExamplePane" js-data="eventingExample"></js-view>
 
         <h2>Adding view specific logic</h2>
 
