@@ -84,7 +84,9 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
         };
 
         ExamplePaneBase.prototype._updateViewGeneration = function () {
-            if (this._editors['html'] && this._editors['viewtemplate']) {
+            var templatePane = this._editors['viewtemplate'];
+
+            if (this._editors['html'] && templatePane) {
                 var generator = new TypeScriptGenerator();
                 var val = this._editors['html'].editor.getValue();
 
@@ -96,7 +98,8 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
 
                 val = val || '';
 
-                this._editors['viewtemplate'].editor.setValue(val);
+                templatePane.editor.setValue(val);
+                templatePane.editor.clearSelection();
             }
         };
 

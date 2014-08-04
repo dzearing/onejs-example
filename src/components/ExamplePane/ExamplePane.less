@@ -35,6 +35,7 @@
 
     .pane {
         display: inline-block;
+        .user-select(none);
 
         .title {
             display: inline-block;
@@ -42,9 +43,8 @@
             margin-right: 5px;
             height: 35px;
             line-height: 35px;
-            font-size: 13px;
+            font-size: .7em;
             cursor: pointer;
-            .user-select(none);
         }
 
         .title:hover {
@@ -71,10 +71,9 @@
         &.isSelected  {
             .title {
                 border-top: 5px solid @highlightColor;
-
                 background: @lightestBGColor linear-gradient(to top,rgba(232,232,232,0) 0,rgba(232,232,232,.4) 78%,rgba(90,158,221,.2) 100%);
-                line-height: 25px;
                 height: 30px;
+                line-height: 25px;
                 -webkit-tap-highlight-color: transparent;
             }
 
@@ -85,7 +84,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: @firstMaxWidth) {
     .c-ExamplePane {
         height: 480px;
 

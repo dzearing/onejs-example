@@ -27,10 +27,8 @@ class HeaderBlock0Item extends View {
             },
             "events": {
                 "click": [
-                    "$send(command.viewType, $root.pageType)"
-                ],
-                "touchstart": [
-                    "$send(command.viewType, $root.pageType)"
+                    "$send(command.viewType, $root.pageType)",
+                    "$send(command.key, $parent.selectedKey)"
                 ]
             }
         },
@@ -81,11 +79,14 @@ class Header extends View {
     onRenderHtml(): string {
         return '' +
             '<div class="c-Header">' +
+                '<div id="' + this.id + '_0" class="hamburgerButton"></div>' +
                 '<div class="logoImage"></div>' +
-                '<div id="' + this.id + '_0" class="logo">' +
+                '<div id="' + this.id + '_1" class="logo">' +
                     this._genText('logoText') +
                 '</div>' +
-                this.headerBlock0.renderHtml() +
+                '<div id="' + this.id + '_2" ' + this._genClass('commandArea', ['isExpanded','commandsExpanded']) + '>' +
+                    this.headerBlock0.renderHtml() +
+                '</div>' +
             '</div>' +
             '';
     }
@@ -93,7 +94,21 @@ class Header extends View {
     _bindings = [
         {
             "id": "0",
+            "events": {
+                "click": [
+                    "$toggle(commandsExpanded)"
+                ]
+            }
+        },
+        {
+            "id": "1",
             "text": "logoText"
+        },
+        {
+            "id": "2",
+            "className": {
+                "isExpanded": "commandsExpanded"
+            }
         }
     ];
 }

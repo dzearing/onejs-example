@@ -83,7 +83,9 @@ class ExamplePaneBase extends View {
     }
 
     _updateViewGeneration() {
-        if (this._editors['html'] && this._editors['viewtemplate']) {
+        var templatePane = this._editors['viewtemplate'];
+
+        if (this._editors['html'] && templatePane) {
             var generator = new TypeScriptGenerator();
             var val = this._editors['html'].editor.getValue();
 
@@ -95,7 +97,8 @@ class ExamplePaneBase extends View {
 
             val = val || '';
 
-            this._editors['viewtemplate'].editor.setValue(val);
+            templatePane.editor.setValue(val);
+            templatePane.editor.clearSelection();
         }
     }
 
