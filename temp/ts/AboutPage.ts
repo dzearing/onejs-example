@@ -75,10 +75,10 @@ class AboutPage extends AboutPageBase {
                 '</h2>' +
                 '<div class="code">' +
                     '<div>' +
-                        'git clone https://github.com/dzearing/od-wireframe' +
+                        'git clone https://github.com/dzearing/onejs-example' +
                     '</div>' +
                     '<div>' +
-                        'cd od-wireframe' +
+                        'cd onejs-example' +
                     '</div>' +
                     '<div>' +
                         'npm i' +

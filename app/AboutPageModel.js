@@ -81,7 +81,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                             hasEditor: true,
                             updatesResults: true,
                             editorType: 'typescript',
-                            title: 'AppModel.js',
+                            title: 'AppModel.ts',
                             content: 'import ViewModel = require(\'ViewModel\');\n\nclass AppModel extends ViewModel {\n    data = {\n        tom: {\n            title: \'Tom\\\'s favs\',\n            things: [\n                \'Watches\',\n                \'Football\'\n            ]\n        },\n        bob: {\n            title: \'Bob\\\'s favs\',\n            things: [\n                \'Movies\'\n            ]\n        }\n   };\n}\n\nexport = AppModel;\n'
                         }],
                     selectedPane: 'html',
@@ -101,7 +101,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                             hasEditor: true,
                             updatesResults: true,
                             editorType: 'typescript',
-                            title: 'ToggleButtonModel.js',
+                            title: 'ToggleButtonModel.ts',
                             content: 'import ViewModel = require(\'ViewModel\');\n\nclass ToggleButtonModel extends ViewModel {\n    data = {\n        isActive: false,\n        onClick: function() { alert(\'toggling!\'); }\n   };\n}\n\nexport = ToggleButtonModel;\n'
                         }],
                     selectedPane: 'html',

@@ -16,6 +16,12 @@ class DocsPage extends View {
                     '</h3>' +
                     '<ul>' +
                         '<li>' +
+                            'Creating a OneJS site' +
+                        '</li>' +
+                        '<li>' +
+                            'Creating/publishing controls' +
+                        '</li>' +
+                        '<li>' +
                             'Navigation and routing' +
                         '</li>' +
                         '<li>' +
