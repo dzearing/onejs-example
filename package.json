@@ -9,7 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "onejs": "^1.0.4"
+    "onejs": "^1.0.4",
+    "onejs-compiler": "^1.0.1"
   },
   "devDependencies": {
     "gulp": "^3.8.6",
@@ -25,6 +26,7 @@
     "gulp-less": "^1.3.2",
     "gulp-filter": "^0.5.0",
     "gulp-size": "^1.0.0",
-    "gulp-minify-css": "^0.3.7"
+    "gulp-minify-css": "^0.3.7",
+    "gulp-csstojs": "^1.0.1"
   }
 }
