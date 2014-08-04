@@ -4,29 +4,17 @@
 
 ## Install
 
-TBD
-
-you must first link dependencies:
+To install, you need node.js installed.
 
 ```
-git clone onejs
-cd onejs
-npm link
-cd..
-git clone gulp-onejs-compiler
-cd gulp-onejs-compiler
-npm link
-cd ..\onejs-example
-npm link onejs
-npm linke gulp-onejs-compiler
-```
-
-Then you can build:
-
-```
+git clone onejs-example
+cd onejs-example
 npm i
 gulp
 ```
+
+Then open the index.html in a browser. You can also use http-server to host it all and hit it from a device that can access the url.
+
 
 ## License
 

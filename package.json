@@ -1,6 +1,6 @@
 {
   "name": "onejs-example",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,14 @@
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "onejs": "^1.0.4"
+    },
   "devDependencies": {
     "gulp": "^3.8.6",
     "gulp-tsc": "^0.9.2",
-    "gulp-onejs-compiler": "^0.0.0",
+    "typescript": "^1.0.1",
+    "gulp-onejs-compiler": "^1.0.3",
     "gulp-clean": "^0.3.1",
     "requirejs": "^2.1.14",
     "gulp-flatten": "0.0.2",
