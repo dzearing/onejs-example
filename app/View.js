@@ -210,11 +210,14 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
             var targetObject = this._getPropTarget(propertyName);
             var targetViewModel = targetObject.view.getViewModel();
 
+            // TODO, this is a temp fix, less than ideal. If we set command.isExpanded
+            // as the property name, we'd have to do what we have below which is to reach
+            // in and set the value on the the target. We shouldn't do this.
+            // But viewmodel.setData is shallow, so if we passed in { command: { isExpanded: true }},
+            // it would stomp on the existing value as it's a new command object.
             if (targetViewModel) {
-                var data = {};
-
-                data[this._getPropName(propertyName)] = propertyValue;
-                targetViewModel.setData(data);
+                targetObject.target[this._getPropName(propertyName)] = propertyValue;
+                targetViewModel.change();
             }
         };
 
