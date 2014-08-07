@@ -16,6 +16,7 @@ class AboutPage extends AboutPageBase {
     eventingExamplePane = <any>this.addChild(new ExamplePane());
 
     onViewModelChanged() {
+        super.onViewModelChanged();
         this.viewsExamplePane.setData(this.getValue('viewsExample'));
         this.viewModelsExamplePane.setData(this.getValue('viewModelsExample'));
         this.viewInViewExamplePane.setData(this.getValue('viewInViewExample'));

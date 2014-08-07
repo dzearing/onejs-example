@@ -19,6 +19,7 @@ define(["require", "exports", 'AboutPageModel', 'AboutPageBase', 'ExamplePane', 
             this.eventingExamplePane = this.addChild(new ExamplePane());
         }
         AboutPage.prototype.onViewModelChanged = function () {
+            _super.prototype.onViewModelChanged.call(this);
             this.viewsExamplePane.setData(this.getValue('viewsExample'));
             this.viewModelsExamplePane.setData(this.getValue('viewModelsExample'));
             this.viewInViewExamplePane.setData(this.getValue('viewInViewExample'));

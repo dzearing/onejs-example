@@ -98,10 +98,12 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
             ];
         }
         ExamplePane.prototype.onInitialize = function () {
+            _super.prototype.onInitialize.call(this);
             this.examplePaneBlock0.owner = this;
         };
 
         ExamplePane.prototype.onViewModelChanged = function () {
+            _super.prototype.onViewModelChanged.call(this);
             this.examplePaneBlock0.setData({ items: this.getValue('panes') });
         };
 

@@ -9,60 +9,13 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
         __extends(HeaderModel, _super);
         function HeaderModel() {
             _super.apply(this, arguments);
-            this.data = {
-                logoText: 'OneJS',
-                commandsExpanded: false,
-                selectedKey: 'about',
-                commands: [
-                    {
-                        key: 'about',
-                        viewType: 'AboutPage',
-                        text: 'About',
-                        url: '#/about'
-                    }, {
-                        key: 'docs',
-                        viewType: 'DocsPage',
-                        text: 'Documentation',
-                        url: '#/docs'
-                    }, {
-                        key: 'create',
-                        viewType: 'AboutPage',
-                        text: 'Create',
-                        url: '#/create'
-                    }, {
-                        key: 'share',
-                        viewType: 'AboutPage',
-                        text: 'Share',
-                        url: '#/share'
-                    }, {
-                        key: 'discover',
-                        viewType: 'AboutPage',
-                        text: 'Discover',
-                        url: '#/discover'
-                    }],
-                isSelected: function (data) {
-                    return (this.view.getViewModel().data.selectedKey === data.command.key);
-                }
-            };
+            this.logoText = 'OneJS';
+            this.commandsExpanded = false;
+            this.selectedCommand = null;
+            this.commands = [];
         }
-        HeaderModel.prototype.onInitialize = function () {
-            this.events.on(window, 'hashchange', this.onHashChanged);
-        };
-
-        HeaderModel.prototype.onHashChanged = function () {
-            var hashValue = document.location.hash;
-            var commands = this.data.commands;
-
-            for (var i = 0; commands && i < commands.length; i++) {
-                if (hashValue.indexOf(commands[i].url) == 0) {
-                    this.data.selectedKey = commands[i].key;
-                    break;
-                }
-            }
-
-            this.data.commandsExpanded = false;
-
-            this.change();
+        HeaderModel.prototype.isSelected = function (data) {
+            return (data.command && this.selectedCommand === data.command);
         };
         return HeaderModel;
     })(ViewModel);

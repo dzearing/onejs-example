@@ -17,7 +17,9 @@ define(["require", "exports", 'ExampleAppModel', 'ExampleAppBase', 'Header', 'Co
             this.content = this.addChild(new ContentControl());
         }
         ExampleApp.prototype.onViewModelChanged = function () {
-            this.content.setData({ contentType: this.getValue('pageType') });
+            _super.prototype.onViewModelChanged.call(this);
+            this.header.setData({ commands: this.getValue('pageCommands'), selectedCommand: this.getValue('selectedPage') });
+            this.content.setData({ contentType: this.getValue('selectedPage.viewType') });
         };
 
         ExampleApp.prototype.onRenderHtml = function () {

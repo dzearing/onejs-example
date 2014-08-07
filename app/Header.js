@@ -20,8 +20,7 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
                     },
                     "events": {
                         "click": [
-                            "$send(command.viewType, $root.pageType)",
-                            "$send(command.key, $parent.selectedKey)"
+                            "$send(command, $parent.selectedCommand)"
                         ]
                     }
                 },
@@ -89,10 +88,12 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
             ];
         }
         Header.prototype.onInitialize = function () {
+            _super.prototype.onInitialize.call(this);
             this.headerBlock0.owner = this;
         };
 
         Header.prototype.onViewModelChanged = function () {
+            _super.prototype.onViewModelChanged.call(this);
             this.headerBlock0.setData({ items: this.getValue('commands') });
         };
 

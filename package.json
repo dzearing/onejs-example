@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "onejs": "^1.0.4",
+    "onejs": "^1.0.5",
     "onejs-compiler": "^1.0.1"
   },
   "devDependencies": {

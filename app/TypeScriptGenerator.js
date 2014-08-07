@@ -22,7 +22,7 @@ define(["require", "exports", './BaseGenerator'], function(require, exports, Bas
                 _this._addLine('import ' + template.viewModelType + ' = require(\'' + template.viewModelType + '\');');
             }
 
-            _this._addChildViewImports(template);
+            _this._addImports(template);
 
             if (template.cssInclude) {
                 var safeName = template.cssInclude.replace('.', '');
@@ -57,12 +57,14 @@ define(["require", "exports", './BaseGenerator'], function(require, exports, Bas
             this._addLine('}');
         };
 
-        TypeScriptGenerator.prototype._addChildViewImports = function (template) {
+        TypeScriptGenerator.prototype._addImports = function (template) {
             var uniqueControlTypes = { 'View': {} };
 
             uniqueControlTypes[template.baseViewType] = template;
 
             function findImports(currentTemplate) {
+                var i;
+
                 for (var memberName in currentTemplate.childViews) {
                     var childViewDefinition = currentTemplate.childViews[memberName];
 
@@ -72,15 +74,25 @@ define(["require", "exports", './BaseGenerator'], function(require, exports, Bas
 
                     uniqueControlTypes[childViewDefinition.baseType] = childViewDefinition;
                 }
-                for (var i = 0; i < currentTemplate.subTemplates.length; i++) {
+                for (i = 0; i < currentTemplate.subTemplates.length; i++) {
                     findImports(currentTemplate.subTemplates[i]);
+                }
+
+                for (i = 0; i < currentTemplate.requireList.length; i++) {
+                    uniqueControlTypes[currentTemplate.requireList[i]] = null;
                 }
             }
 
             findImports(template);
 
             for (var typeName in uniqueControlTypes) {
-                this._addLine('import ' + typeName + ' = require(\'' + typeName + '\');');
+                var safeVariableName = typeName.replace('.', '');
+                this._addLine('import ' + safeVariableName + ' = require(\'' + typeName + '\');');
+
+                // For imports that have no references, we need to add a var reference to trick TypeScript into including it.
+                if (!uniqueControlTypes[typeName]) {
+                    this._addLine(safeVariableName + ';');
+                }
             }
         };
 
@@ -100,6 +112,8 @@ define(["require", "exports", './BaseGenerator'], function(require, exports, Bas
             if (hasSubBlocks) {
                 this._addLine();
                 this._addLine('onInitialize() {', 1);
+
+                this._addLine('super.onInitialize();', 2);
 
                 for (memberName in template.childViews) {
                     childView = template.childViews[memberName].template;
@@ -128,6 +142,8 @@ define(["require", "exports", './BaseGenerator'], function(require, exports, Bas
             if (hasChildViewBindings) {
                 _this._addLine();
                 _this._addLine('onViewModelChanged() {', 1);
+
+                this._addLine('super.onViewModelChanged();', 2);
 
                 for (var memberName in template.childViews) {
                     var childViewDefinition = template.childViews[memberName];

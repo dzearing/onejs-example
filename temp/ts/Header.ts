@@ -27,8 +27,7 @@ class HeaderBlock0Item extends View {
             },
             "events": {
                 "click": [
-                    "$send(command.viewType, $root.pageType)",
-                    "$send(command.key, $parent.selectedKey)"
+                    "$send(command, $parent.selectedCommand)"
                 ]
             }
         },
@@ -69,10 +68,12 @@ class Header extends View {
     headerBlock0 = <any>this.addChild(new HeaderBlock0());
 
     onInitialize() {
+        super.onInitialize();
         this.headerBlock0.owner = this;
     }
 
     onViewModelChanged() {
+        super.onViewModelChanged();
         this.headerBlock0.setData({ items: this.getValue('commands') });
     }
 

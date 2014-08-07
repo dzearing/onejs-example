@@ -9,13 +9,56 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
         __extends(ExampleAppModel, _super);
         function ExampleAppModel() {
             _super.apply(this, arguments);
-            this.data = {
-                pageType: 'AboutPage',
-                isViewingPage: function (data) {
-                    return (data && data.command && data.command.pageType == this.pageType);
-                }
-            };
+            this.pageCommands = [
+                {
+                    key: 'about',
+                    viewType: 'AboutPage',
+                    text: 'About',
+                    url: '#/about'
+                }, {
+                    key: 'docs',
+                    viewType: 'DocsPage',
+                    text: 'Documentation',
+                    url: '#/docs'
+                }, {
+                    key: 'create',
+                    viewType: 'AboutPage',
+                    text: 'Create',
+                    url: '#/create'
+                }, {
+                    key: 'share',
+                    viewType: 'AboutPage',
+                    text: 'Share',
+                    url: '#/share'
+                }, {
+                    key: 'discover',
+                    viewType: 'AboutPage',
+                    text: 'Discover',
+                    url: '#/discover'
+                }];
+            this.selectedPage = this.pageCommands[0];
         }
+        ExampleAppModel.prototype.isViewingPage = function (data) {
+            return (data && data.command && data.command.key == this.selectedPage.key);
+        };
+
+        ExampleAppModel.prototype.onInitialize = function () {
+            this.__events.on(window, 'hashchange', this._onHashChanged);
+        };
+
+        ExampleAppModel.prototype._onHashChanged = function () {
+            var hashValue = document.location.hash;
+            var commands = this.pageCommands;
+
+            for (var i = 0; commands && i < commands.length; i++) {
+                if (hashValue.indexOf(commands[i].url) == 0) {
+                    this.selectedPage = commands[i];
+                    break;
+                }
+            }
+
+            this.change();
+        };
         return ExampleAppModel;
     })(ViewModel);
 

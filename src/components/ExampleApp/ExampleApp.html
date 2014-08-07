@@ -1,8 +1,8 @@
 <js-view js-type="ExampleApp" js-baseType="ExampleAppBase" js-model="ExampleAppModel" js-css="ExampleApp.css">
     <div class="c-ExampleApp">
-        <js-view js-name="header" js-type="Header"></js-view>
+        <js-view js-name="header" js-type="Header" js-data="{ commands: pageCommands, selectedCommand: selectedPage }"></js-view>
         <div class="centered">
-            <js-view js-name="content" js-type="ContentControl" js-data="{ contentType: pageType }"></js-view>
+            <js-view js-name="content" js-type="ContentControl" js-data="{ contentType: selectedPage.viewType }"></js-view>
         </div>
     </div>
 </js-view>

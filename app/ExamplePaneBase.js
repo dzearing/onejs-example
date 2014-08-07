@@ -21,7 +21,7 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
 
             _this._editors = {};
 
-            var panes = _this.getViewModel().data.panes;
+            var panes = _this.getViewModel().panes;
 
             for (var paneIndex = 0; paneIndex < panes.length; paneIndex++) {
                 var pane = panes[paneIndex];

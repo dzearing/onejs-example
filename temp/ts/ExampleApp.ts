@@ -15,7 +15,9 @@ class ExampleApp extends ExampleAppBase {
     content = <any>this.addChild(new ContentControl());
 
     onViewModelChanged() {
-        this.content.setData({ contentType: this.getValue('pageType') });
+        super.onViewModelChanged();
+        this.header.setData({ commands: this.getValue('pageCommands'), selectedCommand: this.getValue('selectedPage') });
+        this.content.setData({ contentType: this.getValue('selectedPage.viewType') });
     }
 
     onRenderHtml(): string {

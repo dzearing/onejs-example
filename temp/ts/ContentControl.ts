@@ -6,7 +6,7 @@ class ContentControl extends View {
     activeControl: View;
 
     public getContentType(data) {
-        return this.getViewModel().data.contentType;
+        return this.getViewModel().contentType;
     }
 
     public onInitialize() {
@@ -35,7 +35,7 @@ class ContentControl extends View {
 
     public updateContent() {
         var _this = this;
-        var desiredContentType = _this.getContentType(_this.getViewModel().data);
+        var desiredContentType = _this.getContentType(_this.getViewModel());
 
         if (desiredContentType != _this.activeContentType) {
             _this.activeContentType = desiredContentType;
@@ -48,14 +48,14 @@ class ContentControl extends View {
             require([ desiredContentType ], function(controlType) {
                 if (_this._state == 2 && desiredContentType == _this.activeContentType) {
                     _this.activeControl = _this.addChild(new controlType());
-                    _this.activeControl.setData(_this.getViewModel().data);
+                    _this.activeControl.setData(_this.getViewModel());
                     _this.swapInControl(_this.activeControl);
                 }
             });
         }
         else {
             if (_this.activeControl) {
-                _this.activeControl.setData(_this.getViewModel().data);
+                _this.activeControl.setData(_this.getViewModel());
             }
         }
     }

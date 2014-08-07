@@ -74,10 +74,12 @@ class ExamplePane extends ExamplePaneBase {
     examplePaneBlock0 = <any>this.addChild(new ExamplePaneBlock0());
 
     onInitialize() {
+        super.onInitialize();
         this.examplePaneBlock0.owner = this;
     }
 
     onViewModelChanged() {
+        super.onViewModelChanged();
         this.examplePaneBlock0.setData({ items: this.getValue('panes') });
     }
 

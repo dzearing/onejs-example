@@ -200,7 +200,7 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
             var targetValue = (targetObject && targetObject.target) ? targetObject.target[propertyName] : '';
 
             if (typeof targetValue === 'function') {
-                targetValue = targetValue.call(targetObject, this._viewModel.data, propertyName);
+                targetValue = targetValue.call(targetObject.target, this._viewModel, propertyName);
             }
 
             return targetValue;
@@ -233,7 +233,7 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
 
         View.prototype._getPropTarget = function (propertyName) {
             var view = this;
-            var propTarget = view.getViewModel().data;
+            var propTarget = view.getViewModel();
             var periodIndex = propertyName.indexOf('.');
             var propertyPart;
 
@@ -242,10 +242,10 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
 
                 if (propertyPart === '$parent') {
                     view = this.parent.owner || this.parent;
-                    propTarget = view ? view.getViewModel().data : null;
+                    propTarget = view ? view.getViewModel() : null;
                 } else if (propertyPart === '$root') {
                     view = this._getRoot();
-                    propTarget = view.getViewModel().data;
+                    propTarget = view.getViewModel();
                 } else {
                     propTarget = propTarget[propertyPart];
                 }

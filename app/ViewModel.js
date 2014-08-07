@@ -1,39 +1,38 @@
 define(["require", "exports", 'EventGroup'], function(require, exports, EventGroup) {
     var ViewModel = (function () {
         function ViewModel(data) {
-            this.data = {};
-            this.id = ViewModel._instanceCount++;
-            this.events = new EventGroup(this);
-            this.events.declare('change');
+            this.__id = ViewModel.__instanceCount++;
+            this.__events = new EventGroup(this);
+            this.__events.declare('change');
             this.setData(data);
         }
         ViewModel.prototype.dispose = function () {
-            this.events.dispose();
+            this.__events.dispose();
         };
 
         ViewModel.prototype.setData = function (data, shouldFireChange) {
             var hasChanged = false;
 
             for (var i in data) {
-                if (data.hasOwnProperty(i)) {
-                    var oldValue = this.data[i];
+                if (data.hasOwnProperty(i) && i.indexOf('__') !== 0 && i !== 'setData' && i !== 'dispose' && i !== 'change') {
+                    var oldValue = this[i];
                     var newValue = data[i];
 
                     if (oldValue !== newValue) {
                         if (oldValue && EventGroup.isDeclared(oldValue, 'change')) {
-                            this.events.off(oldValue);
+                            this.__events.off(oldValue);
                         }
-                        this.data[i] = newValue;
+                        this[i] = newValue;
                         hasChanged = true;
                         if (newValue && EventGroup.isDeclared(newValue, 'change')) {
-                            this.events.on(newValue, 'change', this.change);
+                            this.__events.on(newValue, 'change', this.change);
                         }
                     }
                 }
             }
 
             if ((hasChanged && shouldFireChange !== false) || shouldFireChange === true) {
-                this.events.raise('change');
+                this.__events.raise('change');
             }
         };
 
@@ -41,9 +40,9 @@ define(["require", "exports", 'EventGroup'], function(require, exports, EventGro
         };
 
         ViewModel.prototype.change = function (args) {
-            this.events.raise('change', args);
+            this.__events.raise('change', args);
         };
-        ViewModel._instanceCount = 0;
+        ViewModel.__instanceCount = 0;
         return ViewModel;
     })();
 
