@@ -1,6 +1,8 @@
 import View = require('View');
 
 class ContentControl extends View {
+    viewName = "ContentControl";
+
     containerElement: HTMLElement;
     activeContentType: string;
     activeControl: View;

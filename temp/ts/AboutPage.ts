@@ -27,50 +27,133 @@ class AboutPage extends AboutPageBase {
         return '' +
             '<div class="c-AboutPage page">' +
                 '<h1>' +
-                    'OneJS is a tiny web framework.' +
+                    'OneJS is a toolset for building reusable web things.' +
                 '</h1>' +
-                '<p>' +
-                    'OneJS is a small set of core classes which enable you to build easily reusable web components in an Model View ViewModel (MVVM) pattern.' +
+                '<p class="warn">' +
+                    'Warning: design is being reviewed and instructions subject to change.' +
                 '</p>' +
                 '<p>' +
-                    'Utilizing RequireJS to load and optimize modules, you can include only the parts of OneJS you need. A barebones reusable web component, merged in with the common core including data binding support adds' +
-                    '<span class="ref">' +
-                        '5k (gzipped)' +
-                    '</span>' +
-                    'to the download size. This means sites won&#39;t have to download a larger  framework just to use your component.' +
+                    '<b>' +
+                        'Don&#39;t think of it as &quot;yet another JavaScript framework.&quot;' +
+                    '</b>' +
+                    'It&#39;s a small set of JavaScript classes that provide a common core for producing reusable control libraries while minimizing impact on file size.' +
                 '</p>' +
                 '<p>' +
-                    'For production purposes, OneJS uses a compiler to compile Views (templates) into TypeScript classes. These can be mixed together with other components, and TypeScript type checking can catch your bugs early. When we&#39;re ready to update our site, we pipe all classes through compilers/optimizers (tsc, less, cssminify, uglify2, etc) to provide a fully optimized site.' +
+                    '<b>' +
+                        'You only load what you need.' +
+                    '</b>' +
+                    'Everything is modular and is required using' +
+                    '<a href="http://requirejs.org/">' +
+                        'RequireJS.' +
+                    '</a>' +
+                    'If you only need the View class, you only bundle that with your code. If you use repeat blocks, you include the Repeater class. If you use Selection, you include that. Grow your core only as big as you need it to be. A barebones reusable web component, merged with the common core only adds 3k to the package. No more demanding yet another framework on their site.' +
+                '</p>' +
+                '<p>' +
+                    '<b>' +
+                        'Start with html and css, make it reusable.' +
+                    '</b>' +
+                    'Creating an easily instantiatable JavaScript view class is a matter of adding tags around your markup and piping it through a template compiler.' +
+                '</p>' +
+                '<p>' +
+                    '<b>' +
+                        'Simple to understand.' +
+                    '</b>' +
+                    'HTML templates compile to easily understandable JavaScript classes, so that they can be reused over and over.' +
                 '</p>' +
                 '<h2>' +
-                    'Why' +
+                    'OneJS consists of' +
                 '</h2>' +
                 '<ol>' +
                     '<li>' +
-                        'Performance first. No virtual DOM required to minimize DOM changes.' +
+                        'A' +
+                        '<a href="https://github.com/dzearing/onejs" target="_blank">' +
+                            'OneJS' +
+                        '</a>' +
+                        'core JavaScript library.' +
                     '</li>' +
                     '<li>' +
-                        'Small footprint. (8k gzipped) RequireJS is the only dependency.' +
+                        'A' +
+                        '<a href="https://github.com/dzearing/onejs-compiler" target="_blank">' +
+                            'template compiler' +
+                        '</a>' +
+                        'that can validate your html and binding correctness, and output a JavaScript or TypeScript class which can be instantiated and rendered. Available as a' +
+                        '<a href="https://github.com/dzearing/gulp-onejs-compiler" target="_blank">' +
+                            'gulp plugin.' +
+                        '</a>' +
                     '</li>' +
                     '<li>' +
-                        'Build reusable components, share them with others, reskin them.' +
-                    '</li>' +
-                    '<li>' +
-                        'Easy to iterate with. Start with markup, build a view model for it when youre ready.' +
-                    '</li>' +
-                    '<li>' +
-                        'Testable. Generated selenium test stubs make it easy to navigate your site.' +
-                    '</li>' +
-                    '<li>' +
-                        'Localizable. Put your strings and css in amd modules, reroute as necessary.' +
-                    '</li>' +
-                    '<li>' +
-                        'Interopable. Want to use a jQuery plugin? How about that Ace editor, which is being used on this page? OneJS won&#39;t get in your way.' +
-                    '</li>' +
-                    '<li>' +
-                        'Extendable. Easy to create your own product base classes. Easy to create your own binding and eventing helpers that can be invoked from views directly.' +
+                        'A' +
+                        '<a href="http://github.com/dzearing/gulp-csstojs" target="_blank">' +
+                            'css to js converter' +
+                        '</a>' +
+                        'that converts css into a JavaScript module which can be bundled, loaded on demand, and remapped for localization purposes.' +
                     '</li>' +
                 '</ol>' +
+                '<h2>' +
+                    'Try it' +
+                '</h2>' +
+                '<p>' +
+                    '<b>' +
+                        'Step 1.' +
+                    '</b>' +
+                    'Install' +
+                    '<a href="http://nodejs.org/" target="_blank">' +
+                        'node.js' +
+                    '</a>' +
+                    '. We use node to build stuff and run tests. We also use' +
+                    '<a href="http://gulpjs.com" target="_blank">' +
+                        'gulp' +
+                    '</a>' +
+                    'as our build tool of choice.' +
+                '</p>' +
+                '<p>' +
+                    '<b>' +
+                        'Step 2.' +
+                    '</b>' +
+                    'Get to a command line where you can run &quot;npm&quot; and install the OneJS project generator.' +
+                '</p>' +
+                '<p class="code">' +
+                    'npm install -g generator-onejs' +
+                '</p>' +
+                '<p>' +
+                    '<b>' +
+                        'Step 3.' +
+                    '</b>' +
+                    'Make a new directory, and cd into it.' +
+                '</p>' +
+                '<p class="code">' +
+                    'mkdir my-onejs-project &amp;&amp; cd $_' +
+                '</p>' +
+                '<p>' +
+                    '<b>' +
+                        'Step 4.' +
+                    '</b>' +
+                    'Run the generator to generate a new OneJS view project. Follow the prompts, etc.' +
+                '</p>' +
+                '<p class="code">' +
+                    'yo onejs' +
+                '</p>' +
+                '<p>' +
+                    'Spin up a server/browser with watch/livereload support, which will auto build your stuff and refresh your page:' +
+                '</p>' +
+                '<p class="code">' +
+                    'gulp serve' +
+                '</p>' +
+                '<p>' +
+                    'You should see a browser open with an example page.' +
+                    '<a href="#/tutorial">' +
+                        'Proceed to the tutorial and start making reusable stuff!' +
+                    '</a>' +
+                '</p>' +
+                '<h2>' +
+                    'How it works' +
+                '</h2>' +
+                '<p>' +
+                    'Making web content that renders on the client and can be easily reused should be simple. So lets start with simple. I mocked up a contact card.' +
+                '</p>' +
+                '<div class="code">' +
+                    'Example here' +
+                '</div>' +
                 '<h2>' +
                     'Get started now' +
                 '</h2>' +

@@ -2,7 +2,7 @@ define(["require", "exports"], function(require, exports) {
     var EventGroup = (function () {
         function EventGroup(parent) {
             this._id = EventGroup._uniqueId++;
-            this._parent = parent;
+            this._parent = parent || window;
             this._eventRecords = [];
         }
         EventGroup.prototype.dispose = function () {

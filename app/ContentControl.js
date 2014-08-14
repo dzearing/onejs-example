@@ -9,6 +9,7 @@ define(["require", "exports", 'View'], function(require, exports, View) {
         __extends(ContentControl, _super);
         function ContentControl() {
             _super.apply(this, arguments);
+            this.viewName = "ContentControl";
         }
         ContentControl.prototype.getContentType = function (data) {
             return this.getViewModel().contentType;

@@ -44,6 +44,8 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
         View.prototype.onRenderHtml = function (viewModel) {
             return '';
         };
+        View.prototype.onResize = function () {
+        };
         View.prototype.onActivate = function () {
         };
         View.prototype.onDeactivate = function () {
@@ -101,6 +103,16 @@ define(["require", "exports", 'ViewModel', 'EventGroup', 'Encode', 'DomUtils'], 
                 }
 
                 this.onActivate();
+            }
+        };
+
+        View.prototype.resize = function () {
+            if (this._state === 2 /* ACTIVE */) {
+                this.onResize();
+
+                for (var i = 0; i < this.children.length; i++) {
+                    this.children[i].resize();
+                }
             }
         };
 
