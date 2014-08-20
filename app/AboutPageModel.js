@@ -18,7 +18,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                     {
                         key: 'html',
                         hasEditor: true,
-                        editorType: 'html',
+                        editorType: 'xml',
                         updatesResults: true,
                         title: 'FavoriteThings.html',
                         content: '<js-view js-type="FavoriteThings">\n    <div class="c-FavoriteThings">\n        <b>My Favorite things</b>\n        <ul>\n            <li>Whiskers on kittens</li>\n            <li>Warm woolen mittens</li>\n        </ul>\n    </div>\n</js-view>'
@@ -28,7 +28,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                         updatesResults: false,
                         editorType: 'typescript',
                         title: 'Generated TypeScript',
-                        content: '.c-FavoriteThings {\n    font-family: "Helvetica";\n}\n\nul {\n    margin: 0;\n    padding: 0 25px;\n    font-size: 80%;\n    list-style-type: none;\n'
+                        content: ''
                     }, {
                         key: 'less',
                         hasEditor: true,
@@ -44,7 +44,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                     {
                         key: 'html',
                         hasEditor: true,
-                        editorType: 'html',
+                        editorType: 'xml',
                         updatesResults: true,
                         title: 'View',
                         content: '<js-view js-type="FavoriteThings" js-model="FavoriteThingsModel">\n    <div class="c-FavoriteThings">\n        <b js-bind="text:title"></b>\n        <ul js-repeat="thing in things">\n            <li js-bind="text:thing"></li>\n        </ul>\n    </div>\n</js-view>'
@@ -71,7 +71,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                     {
                         key: 'html',
                         hasEditor: true,
-                        editorType: 'html',
+                        editorType: 'xml',
                         updatesResults: true,
                         title: 'App.html',
                         content: '<js-view js-type="App" js-model="AppModel">\n\n    <js-view\n        js-name="tomStuff"\n        js-type="FavoriteThings"\n        js-data="tom" ></js-view>\n\n    <js-view\n        js-name="bobStuff"\n        js-type="FavoriteThings"\n        js-data="bob" ></js-view>\n        \n</js-view>\n'
@@ -91,7 +91,7 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
                     {
                         key: 'html',
                         hasEditor: true,
-                        editorType: 'html',
+                        editorType: 'xml',
                         updatesResults: true,
                         title: 'ToggleButton.html',
                         content: '<js-view js-type="ToggleButton" js-model="ToggleButtonModel">\n    <button\n        js-bind="text:title,className.isActive:isActive"\n        js-userAction="click:onClick,click:$toggle(isActive)"></button>\n</js-view>\n'

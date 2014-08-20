@@ -1,7 +1,8 @@
 import View = require('View');
 
 class ContentControl extends View {
-    containerElement: HTMLElement;
+    viewName = "ContentControl";
+
     activeContentType: string;
     activeControl: View;
 
@@ -13,20 +14,14 @@ class ContentControl extends View {
         this.updateContent();
     }
 
-    public onRenderHtml() {
-        var markup ='<div id="' + this.id + '">';
+    public onRenderElement() {
+        this.element = this._ce('div');
 
         if (this.activeControl) {
-            markup += this.activeControl.renderHtml();
+            this.element.appendChild(this.activeControl.renderElement());
         }
 
-        markup += '</div>';
-
-        return markup;
-    }
-
-    public onActivate() {
-        this.containerElement = document.getElementById(this.id);
+        return this.element;
     }
 
     public onViewModelChanged() {
@@ -61,7 +56,11 @@ class ContentControl extends View {
     }
 
     public swapInControl(newControl) {
-        this.containerElement.innerHTML = newControl.renderHtml();
+        while (this.element.firstChild) {
+            this.element.removeChild(this.element.firstChild);
+        }
+
+        this.element.appendChild(newControl.renderElement());
         newControl.activate();
     }
 }

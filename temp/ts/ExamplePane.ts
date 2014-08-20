@@ -2,6 +2,7 @@ import ExamplePaneModel = require('ExamplePaneModel');
 import View = require('View');
 import ExamplePaneBase = require('ExamplePaneBase');
 import Repeater = require('Repeater');
+import AceEditor = require('AceEditor');
 import DomUtils = require('DomUtils');
 import ExamplePanecss = require('ExamplePane.css');
 
@@ -9,16 +10,21 @@ DomUtils.loadStyles(ExamplePanecss.styles);
 
 class ExamplePaneBlock0Item extends View {
     viewName = 'ExamplePaneBlock0Item';
+    editor = <any>this.addChild(new AceEditor());
 
-    onRenderHtml(): string {
-        return '' +
-            '<div id="' + this.id + '_0" ' + this._genClass('pane', ['isSelected','$parent.isPaneSelected']) + '>' +
-                '<div id="' + this.id + '_1" class="title">' +
-                    this._genText('pane.title') +
-                '</div>' +
-                '<div id="' + this.id + '_2" ' + this._genAttr('', ['data-key','pane.key']) + ' class="edit"></div>' +
-            '</div>' +
-            '';
+    onViewModelChanged() {
+        super.onViewModelChanged();
+        this.editor.setData(this.getValue('pane'));
+    }
+
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("div", ["class","pane"], bindings[0], [
+            _this._ce("div", ["class","title"], bindings[1]),
+            _this.editor.renderElement()
+        ]));
     }
 
     _bindings = [
@@ -33,16 +39,9 @@ class ExamplePaneBlock0Item extends View {
             "text": "pane.title",
             "events": {
                 "click": [
-                    "$send(pane.key, $parent.selectedPane)"
+                    "$view.send('pane.key', '$parent.selectedPane')"
                 ]
             }
-        },
-        {
-            "id": "2",
-            "attr": {
-                "data-key": "pane.key"
-            },
-            "childId": "editor"
         }
     ];
 }
@@ -52,12 +51,11 @@ class ExamplePaneBlock0 extends Repeater {
     childViewType = ExamplePaneBlock0Item;
     itemName = "pane";
 
-    onRenderHtml(): string {
-        return '' +
-            '<div id="' + this.id + '_0">' +
-                this.renderItems() + 
-            '</div>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("div", [], bindings[0], this.getChildElements()));
     }
 
     _bindings = [
@@ -83,24 +81,25 @@ class ExamplePane extends ExamplePaneBase {
         this.examplePaneBlock0.setData({ items: this.getValue('panes') });
     }
 
-    onRenderHtml(): string {
-        return '' +
-            '<div id="' + this.id + '_0" ' + this._genClass('c-ExamplePane', ['showResults','isResultPaneVisible']) + '>' +
-                '<div class="tab2col1">' +
-                    this.examplePaneBlock0.renderHtml() +
-                '</div>' +
-                '<div class="tab2col2">' +
-                    '<div id="' + this.id + '_1" ' + this._genClass('pane', ['isSelected','isResultPaneVisible']) + '>' +
-                        '<div id="' + this.id + '_2" class="title">' +
-                            'Result' +
-                        '</div>' +
-                        '<div class="edit">' +
-                            '<iframe id="' + this.id + '_3" class="result"></iframe>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("div", ["class","c-ExamplePane"], bindings[0], [
+            _this._ce("div", ["class","tab2col1"], null, [
+                _this.examplePaneBlock0.renderElement()
+            ]),
+            _this._ce("div", ["class","tab2col2"], null, [
+                _this._ce("div", ["class","pane"], bindings[1], [
+                    _this._ce("div", ["class","title"], bindings[2], [
+                        _this._ct("Result")
+                    ]),
+                    _this._ce("div", ["class","edit"], null, [
+                        _this._ce("iframe", ["class","result"], bindings[3])
+                    ])
+                ])
+            ])
+        ]));
     }
 
     _bindings = [
@@ -120,7 +119,7 @@ class ExamplePane extends ExamplePaneBase {
             "id": "2",
             "events": {
                 "click": [
-                    "$toggle(isResultPaneVisible)"
+                    "$view.toggle('isResultPaneVisible')"
                 ]
             }
         },

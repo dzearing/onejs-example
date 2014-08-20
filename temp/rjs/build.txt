@@ -4,11 +4,11 @@ main.js
 EventGroup.js
 ViewModel.js
 ExampleAppModel.js
-Encode.js
 DomUtils.js
 View.js
 ExampleAppBase.js
 HeaderModel.js
+List.js
 Repeater.js
 Header.css.js
 Header.js
@@ -28,6 +28,9 @@ CompiledViewTemplate.js
 BaseGenerator.js
 TypeScriptGenerator.js
 ExamplePaneBase.js
+AceEditorModel.js
+AceEditorBase.js
+AceEditor.js
 ExamplePane.css.js
 ExamplePane.js
 AboutPage.css.js

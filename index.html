@@ -4,11 +4,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script type="text/javascript" src="app-min/require.js"></script>
+
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: 'app-min',
+            baseUrl: 'app',
+            /*
             bundles: {
-                'main': [
+                'main2': [
                     'EventGroup',
                     'ViewModel',
                     'ExampleAppModel',
@@ -24,14 +26,11 @@
                     'ExampleApp.css',
                     'ExampleApp',
                     'main']
-            },
+            },*/
             paths: {
                 'ace': 'http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace'
             },
-            deps: [ 'main', 'AboutPage' ],
-            callback: function() {
-            }
-
+            deps: [ 'main', 'AboutPage' ]
         });
     </script>
 

@@ -20,7 +20,7 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
                     },
                     "events": {
                         "click": [
-                            "$send(command, $parent.selectedCommand)"
+                            "$parent.execute(command)"
                         ]
                     }
                 },
@@ -33,8 +33,13 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
                 }
             ];
         }
-        HeaderBlock0Item.prototype.onRenderHtml = function () {
-            return '' + '<li id="' + this.id + '_0" ' + this._genClass('command', ['selected', '$parent.isSelected']) + '>' + '<a id="' + this.id + '_1" ' + this._genAttr('', ['href', 'command.url']) + '>' + this._genText('command.text') + '</a>' + '</li>' + '';
+        HeaderBlock0Item.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("li", ["class", "command"], bindings[0], [
+                _this._ce("a", [], bindings[1])
+            ]));
         };
         return HeaderBlock0Item;
     })(View);
@@ -53,8 +58,11 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
                 }
             ];
         }
-        HeaderBlock0.prototype.onRenderHtml = function () {
-            return '' + '<ul id="' + this.id + '_0" class="commands">' + this.renderItems() + '</ul>' + '';
+        HeaderBlock0.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("ul", ["class", "commands"], bindings[0], this.getChildElements()));
         };
         return HeaderBlock0;
     })(Repeater);
@@ -71,7 +79,7 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
                     "id": "0",
                     "events": {
                         "click": [
-                            "$toggle(commandsExpanded)"
+                            "$view.toggle('commandsExpanded')"
                         ]
                     }
                 },
@@ -97,8 +105,18 @@ define(["require", "exports", 'HeaderModel', 'View', 'Repeater', 'DomUtils', 'He
             this.headerBlock0.setData({ items: this.getValue('commands') });
         };
 
-        Header.prototype.onRenderHtml = function () {
-            return '' + '<div class="c-Header">' + '<div id="' + this.id + '_0" class="hamburgerButton"></div>' + '<div class="logoImage"></div>' + '<div id="' + this.id + '_1" class="logo">' + this._genText('logoText') + '</div>' + '<div id="' + this.id + '_2" ' + this._genClass('commandArea', ['isExpanded', 'commandsExpanded']) + '>' + this.headerBlock0.renderHtml() + '</div>' + '</div>' + '';
+        Header.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("div", ["class", "c-Header"], null, [
+                _this._ce("div", ["class", "hamburgerButton"], bindings[0]),
+                _this._ce("div", ["class", "logoImage"]),
+                _this._ce("div", ["class", "logo"], bindings[1]),
+                _this._ce("div", ["class", "commandArea"], bindings[2], [
+                    _this.headerBlock0.renderElement()
+                ])
+            ]));
         };
         return Header;
     })(View);
