@@ -2,5 +2,5 @@ import ExampleApp = require('ExampleApp');
 
 var app = new ExampleApp();
 
-document.body.innerHTML = app.renderHtml();
+document.body.appendChild(app.renderElement());
 app.activate();

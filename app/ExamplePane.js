@@ -4,7 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Repeater', 'DomUtils', 'ExamplePane.css'], function(require, exports, ExamplePaneModel, View, ExamplePaneBase, Repeater, DomUtils, ExamplePanecss) {
+define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Repeater', 'AceEditor', 'DomUtils', 'ExamplePane.css'], function(require, exports, ExamplePaneModel, View, ExamplePaneBase, Repeater, AceEditor, DomUtils, ExamplePanecss) {
     DomUtils.loadStyles(ExamplePanecss.styles);
 
     var ExamplePaneBlock0Item = (function (_super) {
@@ -12,6 +12,7 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
         function ExamplePaneBlock0Item() {
             _super.apply(this, arguments);
             this.viewName = 'ExamplePaneBlock0Item';
+            this.editor = this.addChild(new AceEditor());
             this._bindings = [
                 {
                     "id": "0",
@@ -24,21 +25,25 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
                     "text": "pane.title",
                     "events": {
                         "click": [
-                            "$send(pane.key, $parent.selectedPane)"
+                            "$view.send('pane.key', '$parent.selectedPane')"
                         ]
                     }
-                },
-                {
-                    "id": "2",
-                    "attr": {
-                        "data-key": "pane.key"
-                    },
-                    "childId": "editor"
                 }
             ];
         }
-        ExamplePaneBlock0Item.prototype.onRenderHtml = function () {
-            return '' + '<div id="' + this.id + '_0" ' + this._genClass('pane', ['isSelected', '$parent.isPaneSelected']) + '>' + '<div id="' + this.id + '_1" class="title">' + this._genText('pane.title') + '</div>' + '<div id="' + this.id + '_2" ' + this._genAttr('', ['data-key', 'pane.key']) + ' class="edit"></div>' + '</div>' + '';
+        ExamplePaneBlock0Item.prototype.onViewModelChanged = function () {
+            _super.prototype.onViewModelChanged.call(this);
+            this.editor.setData(this.getValue('pane'));
+        };
+
+        ExamplePaneBlock0Item.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("div", ["class", "pane"], bindings[0], [
+                _this._ce("div", ["class", "title"], bindings[1]),
+                _this.editor.renderElement()
+            ]));
         };
         return ExamplePaneBlock0Item;
     })(View);
@@ -57,8 +62,11 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
                 }
             ];
         }
-        ExamplePaneBlock0.prototype.onRenderHtml = function () {
-            return '' + '<div id="' + this.id + '_0">' + this.renderItems() + '</div>' + '';
+        ExamplePaneBlock0.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("div", [], bindings[0], this.getChildElements()));
         };
         return ExamplePaneBlock0;
     })(Repeater);
@@ -87,7 +95,7 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
                     "id": "2",
                     "events": {
                         "click": [
-                            "$toggle(isResultPaneVisible)"
+                            "$view.toggle('isResultPaneVisible')"
                         ]
                     }
                 },
@@ -107,8 +115,25 @@ define(["require", "exports", 'ExamplePaneModel', 'View', 'ExamplePaneBase', 'Re
             this.examplePaneBlock0.setData({ items: this.getValue('panes') });
         };
 
-        ExamplePane.prototype.onRenderHtml = function () {
-            return '' + '<div id="' + this.id + '_0" ' + this._genClass('c-ExamplePane', ['showResults', 'isResultPaneVisible']) + '>' + '<div class="tab2col1">' + this.examplePaneBlock0.renderHtml() + '</div>' + '<div class="tab2col2">' + '<div id="' + this.id + '_1" ' + this._genClass('pane', ['isSelected', 'isResultPaneVisible']) + '>' + '<div id="' + this.id + '_2" class="title">' + 'Result' + '</div>' + '<div class="edit">' + '<iframe id="' + this.id + '_3" class="result"></iframe>' + '</div>' + '</div>' + '</div>' + '</div>' + '';
+        ExamplePane.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("div", ["class", "c-ExamplePane"], bindings[0], [
+                _this._ce("div", ["class", "tab2col1"], null, [
+                    _this.examplePaneBlock0.renderElement()
+                ]),
+                _this._ce("div", ["class", "tab2col2"], null, [
+                    _this._ce("div", ["class", "pane"], bindings[1], [
+                        _this._ce("div", ["class", "title"], bindings[2], [
+                            _this._ct("Result")
+                        ]),
+                        _this._ce("div", ["class", "edit"], null, [
+                            _this._ce("iframe", ["class", "result"], bindings[3])
+                        ])
+                    ])
+                ])
+            ]));
         };
         return ExamplePane;
     })(ExamplePaneBase);

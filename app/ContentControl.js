@@ -9,6 +9,7 @@ define(["require", "exports", 'View'], function(require, exports, View) {
         __extends(ContentControl, _super);
         function ContentControl() {
             _super.apply(this, arguments);
+            this.viewName = "ContentControl";
         }
         ContentControl.prototype.getContentType = function (data) {
             return this.getViewModel().contentType;
@@ -18,20 +19,14 @@ define(["require", "exports", 'View'], function(require, exports, View) {
             this.updateContent();
         };
 
-        ContentControl.prototype.onRenderHtml = function () {
-            var markup = '<div id="' + this.id + '">';
+        ContentControl.prototype.onRenderElement = function () {
+            this.element = this._ce('div');
 
             if (this.activeControl) {
-                markup += this.activeControl.renderHtml();
+                this.element.appendChild(this.activeControl.renderElement());
             }
 
-            markup += '</div>';
-
-            return markup;
-        };
-
-        ContentControl.prototype.onActivate = function () {
-            this.containerElement = document.getElementById(this.id);
+            return this.element;
         };
 
         ContentControl.prototype.onViewModelChanged = function () {
@@ -65,7 +60,11 @@ define(["require", "exports", 'View'], function(require, exports, View) {
         };
 
         ContentControl.prototype.swapInControl = function (newControl) {
-            this.containerElement.innerHTML = newControl.renderHtml();
+            while (this.element.firstChild) {
+                this.element.removeChild(this.element.firstChild);
+            }
+
+            this.element.appendChild(newControl.renderElement());
             newControl.activate();
         };
         return ContentControl;

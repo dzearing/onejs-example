@@ -17,6 +17,16 @@ define(["require", "exports", 'ViewModel'], function(require, exports, ViewModel
         HeaderModel.prototype.isSelected = function (data) {
             return (data.command && this.selectedCommand === data.command);
         };
+
+        HeaderModel.prototype.execute = function (command) {
+            this.selectedCommand = command;
+            this.commandsExpanded = false;
+            this.change();
+
+            window.location.href = command.url;
+
+            return false;
+        };
         return HeaderModel;
     })(ViewModel);
 

@@ -2,84 +2,79 @@ import View = require('View');
 import TypeScriptGenerator = require('TypeScriptGenerator');
 
 class ExamplePaneBase extends View {
-
+    _editorId = this.id + 'editor';
     _editors = {};
 
     onActivate() {
         this._findEditors();
-        this._initializeEditors();
     }
 
     _findEditors() {
         var _this = this;
 
-        _this._editors = {};
+        require(['ace'], function() {
+            if (_this._state == 2) {
 
-        var panes = _this.getViewModel().panes;
+                _this._editors = {};
 
-        for (var paneIndex = 0; paneIndex < panes.length; paneIndex++) {
-            var pane = panes[paneIndex];
+                var panes = _this.getViewModel().panes;
 
-            if (pane.hasEditor) {
-                _this._editors[pane.key] = {
-                    pane: pane,
-                    editor: null
-                };
-            }
-        }
+                for (var paneIndex = 0; paneIndex < panes.length; paneIndex++) {
+                    var pane = panes[paneIndex];
 
-
-        findEditorElements(_this.children);
-
-        function findEditorElements(childViews) {
-            for (var i = 0; i < childViews.length; i++) {
-                var view = childViews[i];
-
-                if (view._subElements && view._subElements.editor) {
-                    var key = view._subElements.editor.getAttribute('data-key');
-
-                    if (_this._editors[key]) {
-                        _this._editors[key].element = view._subElements.editor;
+                    if (pane.hasEditor) {
+                        _this._editors[pane.key] = {
+                            pane: pane,
+                            editor: null
+                        };
                     }
                 }
 
-                findEditorElements(view.children);
+                _this._findEditorElements(_this.children);
+                _this._initializeEditors();
             }
+        });
+    }
+
+    _findEditorElements(childViews) {
+        var _this = this;
+
+        for (var i = 0; i < childViews.length; i++) {
+            var view = childViews[i];
+
+            if (view.subElements && view.subElements.editor) {
+                var key = view.subElements.editor.getAttribute('data-key');
+
+                if (_this._editors[key]) {
+                    _this._editors[key].editor = view._editor;
+                    _this._editors[key].element = view.subElements.editor;
+                }
+            }
+
+            _this._findEditorElements(view.children);
         }
     }
 
     _initializeEditors() {
         var _this = this;
 
-        require(['ace'], function() {
-            if (_this._state == 2) {
+        for (var editorKey in _this._editors) {
+            var editorEntry = _this._editors[editorKey];
+            var editor = editorEntry.editor;
 
-
-                for (var editorKey in _this._editors) {
-                    var editorEntry = _this._editors[editorKey];
-                    var editor;
-
-                    editorEntry.editor = editor = ace.edit(editorEntry.element.id);
-                    editor.getSession().setMode('ace/mode/' + editorEntry.pane.editorType);
-                    editor.setValue(editorEntry.pane.content);
-
-                    if (editorEntry.pane.updatesResults) {
-                        editor.getSession().on('change', updateEditors);
-                    }
-
-                    editor.clearSelection();
-
-                }
-
-                updateEditors();
+            if (editorEntry.pane.updatesResults) {
+                editor.getSession().on('change', updateEditors);
             }
 
-            function updateEditors() {
-                _this._updateViewGeneration();
-                _this._updateResult();
-            }
-        });
+            editor.clearSelection();
+        }
 
+        updateEditors();
+
+        function updateEditors() {
+            _this._updateViewGeneration();
+            _this._updateResult();
+        }
     }
 
     _updateViewGeneration() {
@@ -92,7 +87,7 @@ class ExamplePaneBase extends View {
             try {
                 val = generator.generate(val);
             } catch (e) {
-                val = e;
+                val = e.message;
             }
 
             val = val || '';
@@ -103,7 +98,7 @@ class ExamplePaneBase extends View {
     }
 
     _updateResult() {
-        var iframeDoc = this._subElements.resultFrame.contentWindow.document;
+        var iframeDoc = this.subElements.resultFrame.contentWindow.document;
 
         iframeDoc.open();
 
