@@ -1,11 +1,11 @@
 <js-view js-type="Header" js-model="HeaderModel" js-css="Header.css">
     <div class="c-Header">
-        <div class="hamburgerButton" js-userAction="click:$toggle(commandsExpanded)"></div>
+        <div class="hamburgerButton" js-userAction="click:$view.toggle('commandsExpanded')"></div>
         <div class="logoImage"></div>
         <div class="logo" js-bind="text:logoText"></div>
         <div class="commandArea" js-bind="className.isExpanded:commandsExpanded">
             <ul class="commands" js-repeat="command in commands">
-                <li class="command" js-bind="className.selected:$parent.isSelected" js-userAction="click:$send(command, $parent.selectedCommand)">
+                <li class="command" js-bind="className.selected:$parent.isSelected" js-userAction="click:$parent.execute(command)">
                     <a js-bind="href:command.url, text:command.text"></a>
                 </li>
             </ul>

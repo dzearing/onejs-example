@@ -1,9 +1,9 @@
 <js-view js-type="AboutPage" js-baseType="AboutPageBase" js-model="AboutPageModel" js-css="AboutPage.css">
 
     <div class='c-AboutPage page'>
-        <h1>OneJS is a toolset for building reusable web things.</h1>
-
         <p class="warn">Warning: design is being reviewed and instructions subject to change.</p>
+
+        <h1>OneJS is a toolset for building reusable web things.</h1>
 
         <p><b>Don't think of it as "yet another JavaScript framework."</b>It's a small set of JavaScript classes that provide a common core for producing reusable control libraries while minimizing impact on file size.</p>
 
@@ -11,7 +11,7 @@
 
         <p><b>Start with html and css, make it reusable.</b> Creating an easily instantiatable JavaScript view class is a matter of adding tags around your markup and piping it through a template compiler.</p>
 
-        <p><b>Simple to understand.</b> HTML templates compile to easily understandable JavaScript classes, so that they can be reused over and over.</p>
+        <p><b>Simple to understand.</b> HTML templates compile to easily consumable JavaScript classes, so that they can be reused over and over.</p>
 
         <h2>OneJS consists of</h2>
         <ol>
@@ -22,40 +22,21 @@
 
         <h2>Try it</h2>
 
-        <p><b>Step 1.</b>Install <a href="http://nodejs.org/" target="_blank">node.js</a>. We use node to build stuff and run tests. We also use <a href="http://gulpjs.com"  target="_blank">gulp</a> as our build tool of choice.</p>
+        <p><b>1.</b>Install <a href="http://nodejs.org/" target="_blank">node.js</a>. We use node to build stuff and run tests. We also use <a href="http://gulpjs.com"  target="_blank">gulp</a> as our build tool of choice.</p>
 
-        <p><b>Step 2.</b>Get to a command line where you can run "npm" and install the OneJS project generator.</p>
+        <p><b>2.</b>Get to a command line where you can run "npm" and install the OneJS project generator.</p>
         <p class="code">npm install -g generator-onejs</p>
 
-        <p><b>Step 3.</b> Make a new directory, and cd into it.</p>
+        <p><b>3.</b> Make a new directory, and cd into it.</p>
         <p class="code">mkdir my-onejs-project && cd $_</p>
 
-        <p><b>Step 4.</b>Run the generator to generate a new OneJS view project. Follow the prompts, etc.</p>
+        <p><b>4.</b>Run the generator to generate a new OneJS view project. Follow the prompts, etc.</p>
         <p class="code">yo onejs</p>
 
         <p>Spin up a server/browser with watch/livereload support, which will auto build your stuff and refresh your page:</p>
         <p class="code">gulp serve</p>
 
         <p>You should see a browser open with an example page. <a href="#/tutorial">Proceed to the tutorial and start making reusable stuff!</a></p>
-
-        <h2>How it works</h2>
-
-        <p>Making web content that renders on the client and can be easily reused should be simple. So lets start with simple. I mocked up a contact card.</p>
-
-        <div class="code">Example here</div>
-
-
-
-        <h2>Get started now</h2>
-
-        <div class="code">
-            <div>git clone https://github.com/dzearing/onejs-example</div>
-            <div>cd onejs-example</div>
-            <div>npm i</div>
-            <div>gulp</div>
-        </div>
-
-        <p>Then open the index.html locally to render.</p>
 
         <h2>How it works</h2>
 

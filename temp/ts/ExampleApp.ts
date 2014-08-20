@@ -20,15 +20,16 @@ class ExampleApp extends ExampleAppBase {
         this.content.setData({ contentType: this.getValue('selectedPage.viewType') });
     }
 
-    onRenderHtml(): string {
-        return '' +
-            '<div class="c-ExampleApp">' +
-                this.header.renderHtml() +
-                '<div class="centered">' +
-                    this.content.renderHtml() +
-                '</div>' +
-            '</div>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("div", ["class","c-ExampleApp"], null, [
+            _this.header.renderElement(),
+            _this._ce("div", ["class","centered"], null, [
+                _this.content.renderElement()
+            ])
+        ]));
     }
 }
 

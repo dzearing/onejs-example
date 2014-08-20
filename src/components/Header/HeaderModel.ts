@@ -10,6 +10,16 @@ class HeaderModel extends ViewModel {
         return (data.command && this.selectedCommand === data.command);
     }
 
+    execute(command) {
+        this.selectedCommand = command;
+        this.commandsExpanded = false;
+        this.change();
+
+        window.location.href = command.url;
+
+        return false;
+    }
+
 }
 
 export = HeaderModel;

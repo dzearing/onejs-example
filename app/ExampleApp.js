@@ -22,8 +22,16 @@ define(["require", "exports", 'ExampleAppModel', 'ExampleAppBase', 'Header', 'Co
             this.content.setData({ contentType: this.getValue('selectedPage.viewType') });
         };
 
-        ExampleApp.prototype.onRenderHtml = function () {
-            return '' + '<div class="c-ExampleApp">' + this.header.renderHtml() + '<div class="centered">' + this.content.renderHtml() + '</div>' + '</div>' + '';
+        ExampleApp.prototype.onRenderElement = function () {
+            var _this = this;
+            var bindings = _this._bindings;
+
+            return (_this.element = _this._ce("div", ["class", "c-ExampleApp"], null, [
+                _this.header.renderElement(),
+                _this._ce("div", ["class", "centered"], null, [
+                    _this.content.renderElement()
+                ])
+            ]));
         };
         return ExampleApp;
     })(ExampleAppBase);

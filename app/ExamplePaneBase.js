@@ -9,78 +9,78 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
         __extends(ExamplePaneBase, _super);
         function ExamplePaneBase() {
             _super.apply(this, arguments);
+            this._editorId = this.id + 'editor';
             this._editors = {};
         }
         ExamplePaneBase.prototype.onActivate = function () {
             this._findEditors();
-            this._initializeEditors();
         };
 
         ExamplePaneBase.prototype._findEditors = function () {
             var _this = this;
 
-            _this._editors = {};
+            require(['ace'], function () {
+                if (_this._state == 2) {
+                    _this._editors = {};
 
-            var panes = _this.getViewModel().panes;
+                    var panes = _this.getViewModel().panes;
 
-            for (var paneIndex = 0; paneIndex < panes.length; paneIndex++) {
-                var pane = panes[paneIndex];
+                    for (var paneIndex = 0; paneIndex < panes.length; paneIndex++) {
+                        var pane = panes[paneIndex];
 
-                if (pane.hasEditor) {
-                    _this._editors[pane.key] = {
-                        pane: pane,
-                        editor: null
-                    };
-                }
-            }
-
-            findEditorElements(_this.children);
-
-            function findEditorElements(childViews) {
-                for (var i = 0; i < childViews.length; i++) {
-                    var view = childViews[i];
-
-                    if (view._subElements && view._subElements.editor) {
-                        var key = view._subElements.editor.getAttribute('data-key');
-
-                        if (_this._editors[key]) {
-                            _this._editors[key].element = view._subElements.editor;
+                        if (pane.hasEditor) {
+                            _this._editors[pane.key] = {
+                                pane: pane,
+                                editor: null
+                            };
                         }
                     }
 
-                    findEditorElements(view.children);
+                    _this._findEditorElements(_this.children);
+                    _this._initializeEditors();
                 }
+            });
+        };
+
+        ExamplePaneBase.prototype._findEditorElements = function (childViews) {
+            var _this = this;
+
+            for (var i = 0; i < childViews.length; i++) {
+                var view = childViews[i];
+
+                if (view.subElements && view.subElements.editor) {
+                    var key = view.subElements.editor.getAttribute('data-key');
+
+                    if (_this._editors[key]) {
+                        _this._editors[key].editor = view._editor;
+                        _this._editors[key].element = view.subElements.editor;
+                    }
+                }
+
+                _this._findEditorElements(view.children);
             }
         };
 
         ExamplePaneBase.prototype._initializeEditors = function () {
             var _this = this;
 
-            require(['ace'], function () {
-                if (_this._state == 2) {
-                    for (var editorKey in _this._editors) {
-                        var editorEntry = _this._editors[editorKey];
-                        var editor;
+            for (var editorKey in _this._editors) {
+                var editorEntry = _this._editors[editorKey];
+                var editor = editorEntry.editor;
 
-                        editorEntry.editor = editor = ace.edit(editorEntry.element.id);
-                        editor.getSession().setMode('ace/mode/' + editorEntry.pane.editorType);
-                        editor.setValue(editorEntry.pane.content);
-
-                        if (editorEntry.pane.updatesResults) {
-                            editor.getSession().on('change', updateEditors);
-                        }
-
-                        editor.clearSelection();
-                    }
-
-                    updateEditors();
+                if (editorEntry.pane.updatesResults) {
+                    editor.getSession().on('change', updateEditors);
                 }
 
-                function updateEditors() {
-                    _this._updateViewGeneration();
-                    _this._updateResult();
-                }
-            });
+                editor.clearSelection();
+            }
+
+            updateEditors();
+
+            function updateEditors() {
+                _this._updateViewGeneration();
+                _this._updateResult();
+            }
         };
 
         ExamplePaneBase.prototype._updateViewGeneration = function () {
@@ -93,7 +93,7 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
                 try  {
                     val = generator.generate(val);
                 } catch (e) {
-                    val = e;
+                    val = e.message;
                 }
 
                 val = val || '';
@@ -104,7 +104,7 @@ define(["require", "exports", 'View', 'TypeScriptGenerator'], function(require, 
         };
 
         ExamplePaneBase.prototype._updateResult = function () {
-            var iframeDoc = this._subElements.resultFrame.contentWindow.document;
+            var iframeDoc = this.subElements.resultFrame.contentWindow.document;
 
             iframeDoc.open();
 

@@ -9,14 +9,13 @@ DomUtils.loadStyles(Headercss.styles);
 class HeaderBlock0Item extends View {
     viewName = 'HeaderBlock0Item';
 
-    onRenderHtml(): string {
-        return '' +
-            '<li id="' + this.id + '_0" ' + this._genClass('command', ['selected','$parent.isSelected']) + '>' +
-                '<a id="' + this.id + '_1" ' + this._genAttr('', ['href','command.url']) + '>' +
-                    this._genText('command.text') +
-                '</a>' +
-            '</li>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("li", ["class","command"], bindings[0], [
+            _this._ce("a", [], bindings[1])
+        ]));
     }
 
     _bindings = [
@@ -27,7 +26,7 @@ class HeaderBlock0Item extends View {
             },
             "events": {
                 "click": [
-                    "$send(command, $parent.selectedCommand)"
+                    "$parent.execute(command)"
                 ]
             }
         },
@@ -46,12 +45,11 @@ class HeaderBlock0 extends Repeater {
     childViewType = HeaderBlock0Item;
     itemName = "command";
 
-    onRenderHtml(): string {
-        return '' +
-            '<ul id="' + this.id + '_0" class="commands">' +
-                this.renderItems() + 
-            '</ul>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("ul", ["class","commands"], bindings[0], this.getChildElements()));
     }
 
     _bindings = [
@@ -77,19 +75,18 @@ class Header extends View {
         this.headerBlock0.setData({ items: this.getValue('commands') });
     }
 
-    onRenderHtml(): string {
-        return '' +
-            '<div class="c-Header">' +
-                '<div id="' + this.id + '_0" class="hamburgerButton"></div>' +
-                '<div class="logoImage"></div>' +
-                '<div id="' + this.id + '_1" class="logo">' +
-                    this._genText('logoText') +
-                '</div>' +
-                '<div id="' + this.id + '_2" ' + this._genClass('commandArea', ['isExpanded','commandsExpanded']) + '>' +
-                    this.headerBlock0.renderHtml() +
-                '</div>' +
-            '</div>' +
-            '';
+    onRenderElement(): HTMLElement {
+        var _this = this;
+        var bindings = _this._bindings;
+
+        return (_this.element = _this._ce("div", ["class","c-Header"], null, [
+            _this._ce("div", ["class","hamburgerButton"], bindings[0]),
+            _this._ce("div", ["class","logoImage"]),
+            _this._ce("div", ["class","logo"], bindings[1]),
+            _this._ce("div", ["class","commandArea"], bindings[2], [
+                _this.headerBlock0.renderElement()
+            ])
+        ]));
     }
 
     _bindings = [
@@ -97,7 +94,7 @@ class Header extends View {
             "id": "0",
             "events": {
                 "click": [
-                    "$toggle(commandsExpanded)"
+                    "$view.toggle('commandsExpanded')"
                 ]
             }
         },

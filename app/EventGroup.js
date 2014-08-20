@@ -11,45 +11,53 @@ define(["require", "exports"], function(require, exports) {
         };
 
         EventGroup.prototype.on = function (target, eventName, callback) {
-            var parent = this._parent;
-            var eventRecord = {
-                target: target,
-                eventName: eventName,
-                parent: parent,
-                callback: callback,
-                elementCallback: null
-            };
+            if (eventName.indexOf(',') > -1) {
+                var events = eventName.split(/[ ,]+/);
 
-            // Initialize and wire up the record on the target, so that it can call the callback if the event fires.
-            target.__events = target.__events || {};
-            target.__events[eventName] = target.__events[eventName] || {
-                count: 0
-            };
-            target.__events[eventName][this._id] = target.__events[eventName][this._id] || [];
-            target.__events[eventName][this._id].push(eventRecord);
-            target.__events[eventName].count++;
-
-            if (target.addEventListener) {
-                eventRecord.elementCallback = processElementEvent;
-
-                target.addEventListener(eventName, processElementEvent);
-
-                if (eventName === 'click') {
-                    target.addEventListener('touchstart', processElementEvent);
+                for (var i = 0; i < events.length; i++) {
+                    this.on(target, events[i], callback);
                 }
+            } else {
+                var parent = this._parent;
+                var eventRecord = {
+                    target: target,
+                    eventName: eventName,
+                    parent: parent,
+                    callback: callback,
+                    elementCallback: null
+                };
 
-                function processElementEvent() {
-                    var result = callback.apply(parent, arguments);
-                    if (result === false && arguments[0] && arguments[0].preventDefault) {
-                        arguments[0].preventDefault();
+                // Initialize and wire up the record on the target, so that it can call the callback if the event fires.
+                target.__events = target.__events || {};
+                target.__events[eventName] = target.__events[eventName] || {
+                    count: 0
+                };
+                target.__events[eventName][this._id] = target.__events[eventName][this._id] || [];
+                target.__events[eventName][this._id].push(eventRecord);
+                target.__events[eventName].count++;
+
+                if (target.addEventListener) {
+                    eventRecord.elementCallback = processElementEvent;
+
+                    target.addEventListener(eventName, processElementEvent);
+
+                    if (eventName === 'click') {
+                        target.addEventListener('touchstart', processElementEvent);
                     }
 
-                    return result;
-                }
-            }
+                    function processElementEvent() {
+                        var result = callback.apply(parent, arguments);
+                        if (result === false && arguments[0] && arguments[0].preventDefault) {
+                            arguments[0].preventDefault();
+                        }
 
-            // Remember the record locally, so that it can be removed.
-            this._eventRecords.push(eventRecord);
+                        return result;
+                    }
+                }
+
+                // Remember the record locally, so that it can be removed.
+                this._eventRecords.push(eventRecord);
+            }
         };
 
         EventGroup.prototype.off = function (target, eventName, callback) {
