@@ -115,7 +115,12 @@ class AboutPage extends AboutPageBase {
                 _this._ct("Get to a command line where you can run \"npm\" and install the OneJS project generator.")
             ]),
             _this._ce("p", ["class","code"], null, [
-                _this._ct("npm install -g generator-onejs")
+                _this._ce("div", [], null, [
+                    _this._ct("npm install -g yo")
+                ]),
+                _this._ce("div", [], null, [
+                    _this._ct("npm install -g generator-onejs")
+                ])
             ]),
             _this._ce("p", [], null, [
                 _this._ce("b", [], null, [
