@@ -1,31 +1,54 @@
 <!doctype html>
 <html>
 <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script type="text/javascript" src="app-min/require.js"></script>
 
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: 'app',
-            /*
+            baseUrl: 'app-min',
             bundles: {
-                'main2': [
-                    'EventGroup',
-                    'ViewModel',
-                    'ExampleAppModel',
-                    'Encode',
-                    'DomUtils',
-                    'View',
-                    'ExampleAppBase',
-                    'HeaderModel',
-                    'Repeater',
-                    'Header.css',
-                    'Header',
-                    'ContentControl',
-                    'ExampleApp.css',
-                    'ExampleApp',
-                    'main']
-            },*/
+                'main': [
+                    'EventGroup.js',
+                    'ViewModel.js',
+                    'ExampleAppModel.js',
+                    'DomUtils.js',
+                    'View.js',
+                    'ExampleAppBase.js',
+                    'HeaderModel.js',
+                    'List.js',
+                    'Repeater.js',
+                    'Header.css.js',
+                    'Header.js',
+                    'ContentControl.js',
+                    'ExampleApp.css.js',
+                    'ExampleApp.js',
+                    'main.js'
+                ],
+                'AboutPage': [
+                    'AboutPageModel.js',
+                    'AboutPageBase.js',
+                    'ExamplePaneModel.js',
+                    'xmldom.js',
+                    'ViewTemplateDefinition.js',
+                    'CompiledViewTemplate.js',
+                    'BaseGenerator.js',
+                    'TypeScriptGenerator.js',
+                    'ExamplePaneBase.js',
+                    'AceEditorModel.js',
+                    'AceEditorBase.js',
+                    'AceEditor.js',
+                    'ExamplePane.css.js',
+                    'ExamplePane.js',
+                    'AboutPage.css.js',
+                    'AboutPage.js'
+                ],
+                'DocsPage': [
+                    'DocsPage.css.js',
+                    'DocsPage.js'
+                ]
+            },
             paths: {
                 'ace': 'http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace'
             },
