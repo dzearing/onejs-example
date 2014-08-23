@@ -70,11 +70,11 @@ define(["require", "exports", 'AboutPageModel', 'AboutPageBase', 'ExamplePane', 
                 ]),
                 _this._ce("ol", [], null, [
                     _this._ce("li", [], null, [
-                        _this._ct("A "),
+                        _this._ct("A core set of TypeScript classes, available from the github repo "),
                         _this._ce("a", ["href", "https://github.com/dzearing/onejs", "target", "_blank"], null, [
                             _this._ct("OneJS")
                         ]),
-                        _this._ct(" core JavaScript library.")
+                        _this._ct(". You include only what you need and merge into a small redistributable, or build a site and merge a collection of controls plus classes together.")
                     ]),
                     _this._ce("li", [], null, [
                         _this._ct("A "),
@@ -147,13 +147,14 @@ define(["require", "exports", 'AboutPageModel', 'AboutPageBase', 'ExamplePane', 
                     _this._ct("Spin up a server/browser with watch/livereload support, which will auto build your stuff and refresh your page:")
                 ]),
                 _this._ce("p", ["class", "code"], null, [
-                    _this._ct("gulp serve")
+                    _this._ct("gulp")
                 ]),
                 _this._ce("p", [], null, [
-                    _this._ct("You should see a browser open with an example page. "),
-                    _this._ce("a", ["href", "#/tutorial"], null, [
-                        _this._ct("Proceed to the tutorial and start making reusable stuff!")
-                    ])
+                    _this._ct("Then open index.html in a browser open with an example page. All of the source is in the /src directory. Try editing the "),
+                    _this._ce("b", [], null, [
+                        _this._ct("src/{YourControl}/{YourControl.html")
+                    ]),
+                    _this._ct(" file, run gulp and refresh.")
                 ]),
                 _this._ce("h2", [], null, [
                     _this._ct("How it works")
